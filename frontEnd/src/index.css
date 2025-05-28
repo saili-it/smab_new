@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #e63812;
+  --secondary-color: #555554;
+  --primary-font: 'Roboto Condensed', 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+  
+  /* Optional: Show scrollbar on hover */
+  .hover-show-scrollbar:hover {
+    scrollbar-width: thin;
+    -ms-overflow-style: auto;
+  }
+  
+  .hover-show-scrollbar:hover::-webkit-scrollbar {
+    display: block;
+    width: 4px;
+  }
+  
+  .hover-show-scrollbar:hover::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .hover-show-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+  }
+}
+
+body {
+  font-family: var(--primary-font);
+}
+
+/* Navigation Styles */
+.nav-link {
+  @apply text-gray-700 hover:text-[#e63812] font-medium transition-colors;
+}
+
+.nav-link-mobile {
+  @apply block py-2 text-gray-700 hover:text-[#e63812] font-medium transition-colors;
+}
