@@ -53,3 +53,97 @@ body {
 .nav-link-mobile {
   @apply block py-2 text-gray-700 hover:text-[#e63812] font-medium transition-colors;
 }
+
+/* Category Slider Styles */
+.categories-swiper .swiper-button-next,
+.categories-swiper .swiper-button-prev {
+  color: #e63812;
+  background: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.categories-swiper .swiper-button-next:after,
+.categories-swiper .swiper-button-prev:after {
+  font-size: 20px;
+}
+
+.categories-swiper .swiper-button-next:hover,
+.categories-swiper .swiper-button-prev:hover {
+  background: #e63812;
+  color: white;
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+.categories-swiper .swiper-button-disabled {
+  opacity: 0;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Industry Slider Styles */
+.industry-slider {
+  padding: 2rem 0 4rem !important;
+}
+
+.industry-slider .swiper-slide {
+  opacity: 0.4;
+  transform: scale(0.8);
+  transition: all 0.5s ease;
+}
+
+.industry-slider .swiper-slide-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.industry-slider .swiper-button-next,
+.industry-slider .swiper-button-prev {
+  color: #e63812;
+  background: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.industry-slider .swiper-button-next:after,
+.industry-slider .swiper-button-prev:after {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.industry-slider .swiper-button-next:hover,
+.industry-slider .swiper-button-prev:hover {
+  background: #e63812;
+  color: white;
+  transform: scale(1.1);
+}
+
+.industry-slider .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.industry-slider .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #e63812;
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.industry-slider .swiper-pagination-bullet-active {
+  opacity: 1;
+  width: 30px;
+  border-radius: 5px;
+}
+
+/* Background Pattern */
+.bg-dots-pattern {
+  background-image: radial-gradient(#e63812 1px, transparent 1px);
+  background-size: 30px 30px;
+}
