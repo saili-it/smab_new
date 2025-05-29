@@ -8,6 +8,7 @@ import ProjectShowcase from '../components/ProjectShowcase';
 import Stats from '../components/Stats';
 import BestSellers from '../components/BestSellers';
 import { getProduitsCategory } from '../services/productService';
+import Partners from '../components/Partners';
 
 // Import industry images
 import agroFoodImg from '../assets/industrielle/agroFood.jpg';
@@ -263,12 +264,11 @@ const Home = () => {
       <BestSellers 
         title="Nos Meilleures Ventes"
         products={bestSellingProducts}
-      />
+      />      {/* Stats Section */}
+      <Stats />
 
-      <div style={{ marginTop: "100px" }}></div>
-      {/* Stats Section */}
-      <Stats  />
-
+      {/* Partners Section */}
+      <Partners />
 
     </div>
   )
