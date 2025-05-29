@@ -5,6 +5,9 @@ import Hero from '../components/Hero';
 import CategorySlider from '../components/CategorySlider';
 import IndustrySlider from '../components/IndustrySlider';
 import ProjectShowcase from '../components/ProjectShowcase';
+import Stats from '../components/Stats';
+import BestSellers from '../components/BestSellers';
+import { getProduitsCategory } from '../services/productService';
 
 // Import industry images
 import agroFoodImg from '../assets/industrielle/agroFood.jpg';
@@ -28,16 +31,77 @@ import receptionIcon from '../assets/uspIcons/Reception.png';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [bestSellingProducts, setBestSellingProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch products from multiple categories and get random 4
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const categories = ['Extraction des huiles', 'Packaging', 'Nettoyage et séparation', 'Extraction des fruits'];
+        const productsPromises = categories.map(category => getProduitsCategory(category));
+        const results = await Promise.all(productsPromises);
+        
+        // Flatten the array and get all products
+        const allProducts = results.flatMap(result => result.products || []);
+          // Shuffle array and get first 4 items
+        const shuffledProducts = allProducts
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 4)
+          .map(product => ({
+            id: product.ProductId,
+            name: product.ProductLabel,
+            description: product.shortDescription || product.ProductDescription || 'Description à venir',
+            image: product.ImageFilenames?.length > 0 
+              ? `https://www.kelmohub.com/product-images/${product.ProductRef}/${product.ImageFilenames[0]}` 
+              : extractionHuilesImg,
+            category: product.category || ""
+          }));
+
+        setBestSellingProducts(shuffledProducts);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        // Fallback to default products if API fails
+        setBestSellingProducts([
+          {
+            id: 1,
+            name: "Machine d'extraction d'huile PRO-2000",
+            description: "Machine professionnelle pour l'extraction d'huile avec une capacité de 2000L/jour.",
+            image: extractionHuilesImg
+          },
+          {
+            id: 2,
+            name: "Ligne de conditionnement automatique",
+            description: "Système complet de conditionnement avec une cadence de 1200 unités/heure.",
+            image: packagingImg
+          },
+          {
+            id: 3,
+            name: "Système de nettoyage industriel",
+            description: "Équipement de nettoyage et séparation haute performance pour grains et céréales.",
+            image: nettoyageImg
+          },
+          {
+            id: 4,
+            name: "Extracteur de fruits industriel",
+            description: "Machine d'extraction pour fruits et légumes avec système de pressage à froid.",
+            image: extractionFruitsImg
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const heroContent = {
     videoUrl: "https://res.cloudinary.com/dzcd9eizd/video/upload/v1740649881/vdbaner_t3vuiv.mp4",
     title: "Des Solutions Avancées Pour L'Industrie Agro-Food, Pharmaceutique, Cosmétique Et Chimique",
     subtitle: "SMAB - Votre Partenaire en Équipements Industriels de Qualité"
   };
-
-
-
-
 
   return (
     <div className="min-h-screen">      
@@ -174,7 +238,7 @@ const Home = () => {
           }
         ]}      />
 
-      {/* Project Showcase Section */}
+      {/* Project Showcase Section */}      
       <ProjectShowcase
         title="Nos projets et réalisations"
         projects={[
@@ -194,26 +258,18 @@ const Home = () => {
             video: "https://www.youtube.com/embed/9Hw0WgkBn08?si=aANGVo-qW2_CepGX"
           }
         ]}
+      />      
+      {/* Best Sellers Section */}
+      <BestSellers 
+        title="Nos Meilleures Ventes"
+        products={bestSellingProducts}
       />
 
-      {/* Call to Action */}
-      <section className="py-20 px-4 bg-gradient-to-r from-[#e63812] to-[#ff6b4a] text-white">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Prêt à Optimiser Votre Production?
-          </h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Découvrez comment nos solutions peuvent transformer votre entreprise
-          </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 bg-white text-[#e63812] px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors font-semibold"
-          >
-            Contactez-nous
-            <FaArrowRight />
-          </Link>
-        </div>
-      </section>
+      <div style={{ marginTop: "100px" }}></div>
+      {/* Stats Section */}
+      <Stats  />
+
+
     </div>
   )
 }
