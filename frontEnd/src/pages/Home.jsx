@@ -181,38 +181,37 @@ const Home = () => {
           {
             title: "EXTRACTION DES HUILES",
             description: "Solutions complètes pour l'extraction d'huiles",
-            image: extractionHuilesImg,
-            link: "/categories/extraction-huiles"
+            image: extractionHuilesImg,            link: "/activite/extraction-des-huiles"
           },
           {
             title: "PACKAGING",
             description: "Équipements de conditionnement innovants",
             image: packagingImg,
-            link: "/categories/packaging"
+            link: "/activite/packaging"
           },
           {
             title: "NETTOYAGE ET SÉPARATION",
             description: "Technologies avancées de traitement",
-            image: nettoyageImg,
-            link: "/categories/nettoyage-separation"
+            image: nettoyageImg,            
+            link: "/activite/nettoyage-et-separation"
           },
           {
             title: "EXTRACTION DES FRUITS",
             description: "Solutions pour le traitement des fruits",
             image: extractionFruitsImg,
-            link: "/categories/extraction-fruits"
+            link: "/activite/extraction-des-fruits"
           },
           {
             title: "SÉCHAGE ET TORRÉFACTION",
             description: "Équipements de séchage professionnels",
             image: sechageImg,
-            link: "/categories/sechage-torrefaction"
+            link: "/activite/sechage-et-torrefaction"
           },
           {
             title: "BROYAGE ET MOUTURE",
             description: "Solutions de broyage industriel",
             image: broyageImg,
-            link: "/categories/broyage-mouture"
+            link: "/activite/broyage-et-mouture"
           }
         ]}
       />

@@ -136,8 +136,9 @@ const Navigation = () => {
               <div className="overflow-y-auto flex-1 py-4 hide-scrollbar">
                 <div className="space-y-2 px-4">
                   {categories.map((category) => (
-                    <button
+                    <Link
                       key={category.id}
+                      to={`/activite/${category.slug}`}
                       className={`group flex items-center w-full p-3 text-gray-700 rounded-xl justify-between transition-all duration-300 ease-out border-l-[3px] hover:border-[#e63812] ${selectedCategory?.id === category.id ? 'bg-gray-50/80 text-[#e63812] border-[#e63812] shadow-sm' : 'border-transparent hover:bg-gray-50/80 hover:text-[#e63812]'}`}
                       onClick={() => setSelectedCategory(category)}
                     >
@@ -150,7 +151,7 @@ const Navigation = () => {
                       <span className={`transform transition-all duration-300 ${selectedCategory?.id === category.id ? 'text-[#e63812] translate-x-1' : 'text-gray-400 group-hover:text-[#e63812] group-hover:translate-x-1 opacity-60 group-hover:opacity-100'}`}>
                         &rarr;
                       </span>
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -189,7 +190,7 @@ const Navigation = () => {
                     {selectedCategory.subcategories.map((sub) => (
                       <Link
                         key={sub.id}
-                        to={`/${selectedCategory.slug}/${sub.slug}`}
+                        to={`/activite/${selectedCategory.slug}/${sub.slug}`}
                         className="group flex items-center px-4 py-3 text-gray-700 hover:text-[#e63812] bg-gray-50/50 hover:bg-white rounded-xl transition-all duration-300 hover:shadow-md border-l-[3px] border-transparent hover:border-[#e63812]"
                         onClick={() => { setShowSideNav(false); setSelectedCategory(null); }}
                       >
@@ -260,7 +261,7 @@ const Navigation = () => {
                       {selectedCategory.subcategories.map((sub) => (
                         <Link
                           key={sub.id}
-                          to={`/${selectedCategory.slug}/${sub.slug}`}
+                          to={`/activite/${selectedCategory.slug}/${sub.slug}`}
                           className="group flex items-center px-4 py-3 text-gray-700 hover:text-[#e63812] bg-gray-50/50 hover:bg-white rounded-xl transition-all duration-300 hover:shadow-md border-l-[3px] border-transparent hover:border-[#e63812]"
                           onClick={() => { setIsOpen(false); setSelectedCategory(null); }}
                         >
@@ -275,8 +276,9 @@ const Navigation = () => {
                 ) : (
                   <div className="p-4 space-y-4">
                     {categories.map((category) => (
-                      <button
+                      <Link
                         key={category.id}
+                        to={`/activite/${category.slug}`}
                         className="flex items-center w-full p-3 text-gray-700 hover:text-[#e63812] bg-gray-50/50 hover:bg-white rounded-xl transition-all duration-300 hover:shadow-md border-l-[3px] border-transparent hover:border-[#e63812] group"
                         onClick={() => setSelectedCategory(category)}
                       >
@@ -289,7 +291,7 @@ const Navigation = () => {
                         <span className="text-gray-400 group-hover:text-[#e63812] transform group-hover:translate-x-1 transition-all duration-300">
                           &rarr;
                         </span>
-                      </button>
+                      </Link>
                     ))}
                     <div className="border-t border-gray-100 pt-4 space-y-2">
                       <Link

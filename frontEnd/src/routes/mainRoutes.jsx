@@ -2,12 +2,16 @@ import Home from '../pages/Home'
 import About from '../pages/About'
 import Contact from '../pages/Contact'
 import Dashboard from '../pages/Dashboard'
+import Activity from '../pages/Activity'
 import ProtectedRoute from '../components/ProtectedRoute'
 
 export const mainRoutes = [
   {
     index: true,
     element: <Home />
+  },  {
+    path: 'activite/:category/:subcategory?',
+    element: <Activity />
   },
   {
     path: 'about',
