@@ -3,6 +3,7 @@ import About from '../pages/About'
 import Contact from '../pages/Contact'
 import Dashboard from '../pages/Dashboard'
 import Activity from '../pages/Activity'
+import SubActivity from '../pages/SubActivity'
 import ProtectedRoute from '../components/ProtectedRoute'
 
 export const mainRoutes = [
@@ -10,8 +11,12 @@ export const mainRoutes = [
     index: true,
     element: <Home />
   },  {
-    path: 'activite/:category/:subcategory?',
+    path: 'activite/:category',
     element: <Activity />
+  },
+  {
+    path: 'activite/:category/:subcategory',
+    element: <SubActivity />
   },
   {
     path: 'about',
