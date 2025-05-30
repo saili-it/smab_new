@@ -6,6 +6,7 @@ import Activity from '../pages/Activity'
 import SubActivity from '../pages/SubActivity'
 import ProductDetails from '../pages/ProductDetails'
 import Cart from '../pages/Cart'
+import Services from '../pages/Services'
 import ProtectedRoute from '../components/ProtectedRoute'
 
 export const mainRoutes = [
@@ -13,6 +14,10 @@ export const mainRoutes = [
     index: true,
     element: <Home />
   },  
+  {
+    path: 'services',
+    element: <Services />
+  },
   {
     path: 'activite/:category',
     element: <Activity />

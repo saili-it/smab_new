@@ -25,13 +25,14 @@ const ProductCard = ({ product }) => {
     tempDiv.innerHTML = product.description;
     const strippedDescription = tempDiv.textContent || tempDiv.innerText || '';
 
+    // Ensure consistent reference handling
     dispatch(addToCart({
       id: product.id,
       name: product.name,
       description: strippedDescription.substring(0, 150) + (strippedDescription.length > 150 ? '...' : ''), // Limit description length
-      price: product.price || 0,
       image: product.image,
-      quantity: 1
+      quantity: 1,
+      ref:product.productRef
     }));
   };
 

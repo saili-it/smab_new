@@ -88,8 +88,7 @@ const Navigation = () => {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              <button
+            <div className="hidden md:flex items-center space-x-8">              <button
                 className="nav-trigger flex items-center text-gray-700 hover:text-[#e63812] font-medium transition-colors"
                 onClick={() => setShowSideNav(!showSideNav)}
               >
@@ -101,7 +100,7 @@ const Navigation = () => {
                 Nos services
               </Link>
               <Link to="/about" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
-                À propos de nous
+                À propos
               </Link>
               <Link to="/contact" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
                 Contact

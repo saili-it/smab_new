@@ -57,39 +57,13 @@ const Home = () => {
             image: product.ImageFilenames?.length > 0 
               ? `https://www.kelmohub.com/product-images/${product.ProductRef}/${product.ImageFilenames[0]}` 
               : extractionHuilesImg,
-            category: product.category || ""
+            category: product.category || "",
+            productRef: product.ProductRef
           }));
 
         setBestSellingProducts(shuffledProducts);
       } catch (error) {
         console.error('Error fetching products:', error);
-        // Fallback to default products if API fails
-        setBestSellingProducts([
-          {
-            id: 1,
-            name: "Machine d'extraction d'huile PRO-2000",
-            description: "Machine professionnelle pour l'extraction d'huile avec une capacité de 2000L/jour.",
-            image: extractionHuilesImg
-          },
-          {
-            id: 2,
-            name: "Ligne de conditionnement automatique",
-            description: "Système complet de conditionnement avec une cadence de 1200 unités/heure.",
-            image: packagingImg
-          },
-          {
-            id: 3,
-            name: "Système de nettoyage industriel",
-            description: "Équipement de nettoyage et séparation haute performance pour grains et céréales.",
-            image: nettoyageImg
-          },
-          {
-            id: 4,
-            name: "Extracteur de fruits industriel",
-            description: "Machine d'extraction pour fruits et légumes avec système de pressage à froid.",
-            image: extractionFruitsImg
-          }
-        ]);
       } finally {
         setLoading(false);
       }

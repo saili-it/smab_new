@@ -102,7 +102,6 @@ const ProductDetails = () => {
       prev === 0 ? (product.ImageFilenames?.length - 1) : prev - 1
     );
   };
-
   const handleAddToCart = () => {
     if (product) {
       // Strip HTML tags for cart preview
@@ -114,10 +113,10 @@ const ProductDetails = () => {
         id: product.ProductId,
         name: product.ProductLabel,
         description: strippedDescription.substring(0, 150) + (strippedDescription.length > 150 ? '...' : ''), // Limit description length
-        price: product.price || 0,
         image: product.ImageFilenames?.length > 0
           ? `https://www.kelmohub.com/product-images/${product.ProductRef}/${product.ImageFilenames[0]}`
           : '',
+        productRef: product.ProductRef, // Include product reference
         quantity: 1
       }));
     }

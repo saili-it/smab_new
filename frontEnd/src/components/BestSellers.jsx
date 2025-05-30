@@ -66,7 +66,7 @@ const BestSellers = ({ title, products,category }) => {
             {title}
           </h2>
           <p className="text-gray-600 text-lg leading-relaxed">
-            Découvrez notre sélection d'équipements industriels performants et innovants, choisis pour leur qualité exceptionnelle et leur fiabilité éprouvée
+            {`Découvrez notre sélection d'équipements industriels performants et innovants, choisis pour leur qualité exceptionnelle et leur fiabilité éprouvée`}
           </p>
         </motion.div>
         
