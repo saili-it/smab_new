@@ -4,9 +4,11 @@ import { useAuth } from '../store/AuthContext'
 import logo from '../assets/logos/LOGO-SMAB-CROP-1.png'
 import { FaSearch, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa'
 import { categories } from '../data/categories';
+import { useSelector } from 'react-redux';
 
 const Navigation = () => {
   const { user, logout } = useAuth()
+  const cartItems = useSelector(state => state.cart.items);
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [hasScrolled, setHasScrolled] = useState(false)
@@ -114,7 +116,7 @@ const Navigation = () => {
               <Link to="/cart" className="relative">
                 <FaShoppingCart className="text-2xl text-gray-700 hover:text-[#e63812] transition-colors" />
                 <span className="absolute -top-2 -right-2 bg-[#e63812] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  0
+                  {cartItems.length}
                 </span>
               </Link>
             </div>
@@ -332,7 +334,7 @@ const Navigation = () => {
                         <FaShoppingCart className="mr-3 text-xl" />
                         <span className="flex-1">Panier</span>
                         <span className="ml-auto bg-[#e63812] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          0
+                          {cartItems.length}
                         </span>
                       </Link>
                     </div>

@@ -51,8 +51,8 @@ const subcategoryIcons = {
   'Sertissage et Bouchage': SertissageIcon,
   'Distillation': DistillationIcon,
   'Extraction des Huiles': ExtractionIcon,
-  'Séchage': SechageIcon,
-  'Torréfaction': TorrefactionIcon
+  'Sechage': SechageIcon,
+  'Torrefaction': TorrefactionIcon
 };
 
 const Activity = () => {
@@ -166,9 +166,7 @@ const Activity = () => {
 
         {/* Bottom Gradient */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
-      </header>  
-
-      {/* Coming Soon Banner */}
+      </header>      {/* Coming Soon Banner */}
       {comingSoonCategories.includes(category) && (
         <section className="py-24 px-4">
           <div className="container mx-auto">
@@ -181,7 +179,13 @@ const Activity = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
               </div>
-              
+              <Link
+                to="/contact"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 inline-flex items-center gap-2 bg-white text-[#e63812] px-8 py-4 rounded-xl font-semibold hover:bg-[#e63812] hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                Être notifié de la disponibilité
+                <FaArrowRight className="ml-2" />
+              </Link>
             </div>
           </div>
         </section>
@@ -224,7 +228,7 @@ const Activity = () => {
       )}
 
       {/* Best Sellers Section */}
-      {bestSellers.length > 0 && !comingSoonCategories.includes(category) && (
+      {bestSellers.length > 0 && (
         <section className="py-24 px-4 bg-gray-50">
           <div className="container mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">

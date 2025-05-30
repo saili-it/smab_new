@@ -3,7 +3,7 @@ import ProductCard from './ProductCard';
 import { motion } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
 
-const BestSellers = ({ title, products }) => {
+const BestSellers = ({ title, products,category }) => {
   // Show loading skeleton if no products
   if (!products || products.length === 0) {
     return (

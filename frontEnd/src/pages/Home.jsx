@@ -263,7 +263,8 @@ const Home = () => {
       <BestSellers 
         title="Nos Meilleures Ventes"
         products={bestSellingProducts}
-      />      {/* Stats Section */}
+      />      
+      {/* Stats Section */}
       <Stats />
 
       {/* Partners Section */}
