@@ -94,14 +94,16 @@ const Navigation = () => {
               >
                 <FaBars className="mr-2" />
                 Toutes les catégories
-              </button>
-
-              <Link to="/services" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
+              </button>              <Link to="/services" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
                 Nos services
+              </Link>              <Link to="/conseils" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
+                Nos conseils
               </Link>
+
               <Link to="/about" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
                 À propos
               </Link>
+
               <Link to="/contact" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
                 Contact
               </Link>
@@ -293,8 +295,15 @@ const Navigation = () => {
                           &rarr;
                         </span>
                       </Link>
-                    ))}
-                    <div className="border-t border-gray-100 pt-4 space-y-2">
+                    ))}                    <div className="border-t border-gray-100 pt-4 space-y-2">
+                      <Link
+                        to="/conseils"
+                        className="flex items-center w-full p-3 text-gray-700 hover:text-[#e63812] bg-gray-50/50 hover:bg-white rounded-xl transition-all duration-300 hover:shadow-md"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <span className="flex-1">Nos conseils</span>
+                        <span className="text-gray-400 group-hover:text-[#e63812]">&rarr;</span>
+                      </Link>
                       <Link
                         to="/services"
                         className="block px-4 py-3 text-gray-700 hover:text-[#e63812] bg-gray-50/50 hover:bg-white rounded-xl transition-all duration-300 hover:shadow-md border-l-[3px] border-transparent hover:border-[#e63812]"

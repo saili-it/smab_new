@@ -7,16 +7,25 @@ import SubActivity from '../pages/SubActivity'
 import ProductDetails from '../pages/ProductDetails'
 import Cart from '../pages/Cart'
 import Services from '../pages/Services'
+import NosConseils from '../pages/NosConseils'
+import BlogDetails from '../pages/BlogDetails'
 import ProtectedRoute from '../components/ProtectedRoute'
 
 export const mainRoutes = [
   {
     index: true,
     element: <Home />
-  },  
-  {
+  },    {
     path: 'services',
     element: <Services />
+  },
+  {
+    path: 'conseils',
+    element: <NosConseils />
+  },
+  {
+    path: 'conseils/:id',
+    element: <BlogDetails />
   },
   {
     path: 'activite/:category',

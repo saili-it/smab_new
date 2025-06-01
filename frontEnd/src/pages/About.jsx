@@ -9,6 +9,7 @@ import qualite from '../assets/images/about us/Qualité et performance .png';
 import integrite from '../assets/images/about us/Intégrité et transparence.png';
 import innovation from '../assets/images/about us/Innovation continue .png';
 import accompagnement from '../assets/images/about us/NotreAccpmpagnement.png';
+import accoompagnementImage from '../assets/images/about us/Accompagnement personnalisé.png';
 import { FaArrowRight } from 'react-icons/fa';
 
 const values = [
@@ -37,7 +38,7 @@ const values = [
     id: 4,
     title: "Accompagnement personnalisé",
     description: "Chaque projet est unique, c'est pourquoi nous vous accompagnons de manière personnalisée tout au long de votre projet.",
-    image: accompagnement,
+    image: accoompagnementImage,
     delay: 0.4
   }
 ];
@@ -97,10 +98,10 @@ const About = () => {
               </h2>
               <div className="h-1 w-20 bg-[#e63812] mb-8"></div>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Depuis notre création, SMAB s'est imposé comme un acteur majeur dans le domaine des équipements industriels au Maroc. Notre parcours est marqué par un engagement constant envers l'excellence et l'innovation.
+                {`Depuis notre création, SMAB s'est imposé comme un acteur majeur dans le domaine des équipements industriels au Maroc. Notre parcours est marqué par un engagement constant envers l'excellence et l'innovation.`}
               </p>
               <p className="text-gray-600 mb-8 leading-relaxed">
-                Nous avons bâti notre réputation sur la qualité de nos services, l'expertise de nos équipes et notre capacité à comprendre et répondre aux besoins spécifiques de chaque client.
+                {`Nous avons bâti notre réputation sur la qualité de nos services, l'expertise de nos équipes et notre capacité à comprendre et répondre aux besoins spécifiques de chaque client.`}
               </p>
               <div className="flex flex-col md:flex-row gap-8">
                 <div className="flex items-center gap-4">
