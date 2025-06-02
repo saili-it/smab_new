@@ -10,12 +10,23 @@ import Services from '../pages/Services'
 import NosConseils from '../pages/NosConseils'
 import BlogDetails from '../pages/BlogDetails'
 import ProtectedRoute from '../components/ProtectedRoute'
+import Login from '../pages/Login'
+import Register from '../pages/Register'
 
 export const mainRoutes = [
   {
     index: true,
     element: <Home />
-  },    {
+  },
+  {
+    path: 'login',
+    element: <Login />
+  },
+  {
+    path: 'register',
+    element: <Register />
+  },
+  {
     path: 'services',
     element: <Services />
   },
