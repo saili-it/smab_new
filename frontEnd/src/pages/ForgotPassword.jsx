@@ -1,35 +1,31 @@
 import { useState } from 'react';
-import { useAuth } from '../store/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaLock, FaUser, FaArrowRight } from 'react-icons/fa';
+import { FaEnvelope, FaArrowRight } from 'react-icons/fa';
+import * as authService from '../services/authService';
 import logo from '../assets/logos/LOGO-SMAB-CROP-1.png';
 
-const Login = () => {
-    const [identifier, setIdentifier] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+const ForgotPassword = () => {
+    const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
-    
-    const { login } = useAuth();
-    const navigate = useNavigate();
+    const [message, setMessage] = useState({ type: '', content: '' });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
         setLoading(true);
-
-        try {
-            const result = await login(identifier, password);
-            if (result.success) {
-                navigate('/');
-            } else {
-                setError(result.error || 'Failed to login');
-            }
-        } catch (err) {
-            setError('Failed to login. Please try again.');
+        setMessage({ type: '', content: '' });        try {
+            const response = await authService.forgotPassword(email);
+            setMessage({
+                type: 'success',
+                content: response.message || 'Instructions de réinitialisation envoyées à votre adresse email.'
+            });
+            setEmail('');
+        } catch (error) {
+            setMessage({
+                type: 'error',
+                content: error.message || 'Une erreur est survenue. Veuillez réessayer.'
+            });
         }
-
         setLoading(false);
     };
 
@@ -52,70 +48,44 @@ const Login = () => {
                     <div className="text-center mb-8">
                         <img src={logo} alt="SMAB Logo" className="h-16 mx-auto mb-6" />
                         <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                            Bienvenue
+                            Mot de passe oublié
                         </h2>
                         <p className="text-gray-600">
-                            Connectez-vous pour accéder à votre compte
+                            Entrez votre email pour réinitialiser votre mot de passe
                         </p>
                     </div>
 
-                    {error && (
+                    {message.content && (
                         <motion.div
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="rounded-lg bg-red-50 p-4 mb-6"
+                            className={`rounded-lg p-4 mb-6 ${
+                                message.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+                            }`}
                         >
-                            <div className="text-sm text-red-700">{error}</div>
+                            <div className="text-sm">{message.content}</div>
                         </motion.div>
                     )}
 
-                    <form className="space-y-6" onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-1">
-                                Email ou Téléphone
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                                Email
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <FaUser className="h-5 w-5 text-gray-400" />
+                                    <FaEnvelope className="h-5 w-5 text-gray-400" />
                                 </div>
                                 <input
-                                    id="identifier"
-                                    name="identifier"
-                                    type="text"
+                                    id="email"
+                                    name="email"
+                                    type="email"
                                     required
                                     className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#e63812] focus:border-transparent transition-colors sm:text-sm"
-                                    placeholder="Entrez votre email ou téléphone"
-                                    value={identifier}
-                                    onChange={(e) => setIdentifier(e.target.value)}
+                                    placeholder="Entrez votre email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                                Mot de passe
-                            </label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <FaLock className="h-5 w-5 text-gray-400" />
-                                </div>                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    required
-                                    className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#e63812] focus:border-transparent transition-colors sm:text-sm"
-                                    placeholder="Entrez votre mot de passe"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </div>
-                            <div className="text-right mt-1">
-                                <Link
-                                    to="/forgot-password"
-                                    className="text-sm text-[#e63812] hover:text-[#ff6b4a] transition-colors"
-                                >
-                                    Mot de passe oublié?
-                                </Link>
                             </div>
                         </div>
 
@@ -129,7 +99,7 @@ const Login = () => {
                                     <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                                 ) : (
                                     <>
-                                        Se connecter
+                                        Réinitialiser le mot de passe
                                         <FaArrowRight className="ml-2 transform group-hover:translate-x-1 transition-transform" />
                                     </>
                                 )}
@@ -147,10 +117,10 @@ const Login = () => {
 
                         <div className="text-center">
                             <Link
-                                to="/register"
+                                to="/login"
                                 className="inline-flex items-center text-[#e63812] hover:text-[#ff6b4a] font-medium transition-colors"
                             >
-                                Créer un compte
+                                Retour à la connexion
                                 <FaArrowRight className="ml-2 text-sm" />
                             </Link>
                         </div>
@@ -159,6 +129,6 @@ const Login = () => {
             </motion.div>
         </div>
     );
-}
+};
 
-export default Login;
+export default ForgotPassword;
