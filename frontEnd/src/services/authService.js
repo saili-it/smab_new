@@ -11,7 +11,6 @@ export const login = async (identifier, password) => {
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || 'Login failed');
     
-    // Return the raw data from the server
     return data;
   } catch (error) {
     console.error('Login error:', error);
@@ -50,6 +49,37 @@ export const getProfile = async (token) => {
       'Authorization': `Bearer ${token}`
     }
   });
-  if (!response.ok) throw new Error('Invalid token');
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || 'Failed to get user profile');
+  }
   return await response.json();
+};
+
+export const updateProfile = async (token, userData) => {
+  const response = await fetch(`${API_URL}/auth/update-profile`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(userData)
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || 'Failed to update profile');
+  return data.user || data;
+};
+
+export const updatePassword = async (token, passwordData) => {
+  const response = await fetch(`${API_URL}/auth/change-password`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(passwordData)
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || 'Failed to update password');
+  return data;
 };

@@ -103,6 +103,11 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser)
+    localStorage.setItem('smab_user', JSON.stringify(updatedUser))
+  }
+
   const logout = async () => {
     try {
       if (token) {
@@ -119,7 +124,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, login, register, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )

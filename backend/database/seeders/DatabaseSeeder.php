@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
             'tel' => '1234567890',
+            'address' => '123 Test Street, Test City',
             'password' => bcrypt('password123'),
         ]);
     }
