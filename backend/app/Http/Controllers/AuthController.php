@@ -37,12 +37,10 @@ class AuthController extends Controller
 
         $token = Auth::login($user);
         return $this->respondWithToken($token, $user);
-    }
-
-    public function login(Request $request)
+    }    public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
+            'identifier' => 'required|string',  // This will accept either email or tel
             'password' => 'required|string',
         ]);
 
@@ -50,11 +48,16 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $credentials = $request->only('email', 'password');
+        // Check if input is email or telephone
+        $field = filter_var($request->identifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'tel';
+        $credentials = [
+            $field => $request->identifier,
+            'password' => $request->password
+        ];
 
         if (!$token = Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Unauthorized',
+                'message' => 'Invalid credentials',
             ], 401);
         }
 
