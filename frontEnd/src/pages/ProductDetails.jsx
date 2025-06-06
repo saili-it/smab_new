@@ -6,6 +6,7 @@ import { getProduitDetails } from '../services/productService';
 import ReactPlayer from 'react-player/youtube';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../store/cartSlice';
+import CommentsSection from '../components/CommentsSection';
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -388,7 +389,13 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* Related Products Section - You can add this later */}
+      {/* Comments Section */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <CommentsSection productId={product.ProductId} />
+        </div>
+      </div>
+
     </div>
   );
 };
