@@ -9,21 +9,29 @@ use App\Events\CommentDeleted;
 use Illuminate\Http\Request;
 
 class CommentsController extends Controller
-{
+{    
     public function __construct()
     {
-        $this->middleware('auth:api');
+        // All middleware handled in routes
     }
 
     public function index($productId)
     {
-        $comments = Comment::with(['user:id,name', 'replies.user:id,name'])
-            ->where('product_id', $productId)
-            ->whereNull('parent_id')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        try {
+            $comments = Comment::with(['user:id,name', 'replies.user:id,name'])
+                ->where('product_id', $productId)
+                ->whereNull('parent_id')
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-        return response()->json($comments);
+            return response()->json($comments);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching comments: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error fetching comments',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }    
     
     public function store(Request $request, $productId)

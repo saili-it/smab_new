@@ -1,10 +1,13 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const getComments = async (productId, token) => {
+export const getComments = async (productId, token = null) => {
+  const headers = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const response = await fetch(`${API_URL}/products/${productId}/comments`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
+    headers
   });
   
   if (!response.ok) {
