@@ -29,6 +29,5 @@ Route::group([
 ], function () {
     Route::post('/products/{productId}/comments', [CommentsController::class, 'store']);
     Route::post('/comments/{commentId}/replies', [CommentsController::class, 'reply']);
-    Route::delete('/comments/{commentId}', [CommentsController::class, 'destroy']);
 });
 

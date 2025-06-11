@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaReply, FaUserCircle, FaSignInAlt, FaTrash } from 'react-icons/fa';
+import { FaReply, FaUserCircle, FaSignInAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../store/AuthContext';
 import * as commentsService from '../services/commentsService';
 
-const Comment = ({ comment, onReply, onDelete, isAuthenticated, currentUserId }) => {
+const Comment = ({ comment, onReply, isAuthenticated, currentUserId }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
@@ -16,8 +16,6 @@ const Comment = ({ comment, onReply, onDelete, isAuthenticated, currentUserId })
     setReplyContent('');
     setShowReplyForm(false);
   };
-
-  const canDelete = currentUserId === comment.user.id;
 
   return (
     <motion.div
@@ -30,20 +28,9 @@ const Comment = ({ comment, onReply, onDelete, isAuthenticated, currentUserId })
         <div className="flex items-start gap-3 mb-2">
           <FaUserCircle className="text-3xl text-gray-400" />
           <div className="flex-1">
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-semibold text-gray-800">{comment.user.name}</h4>
-                <p className="text-sm text-gray-500">{new Date(comment.created_at).toLocaleString()}</p>
-              </div>
-              {canDelete && (
-                <button
-                  onClick={() => onDelete(comment.id)}
-                  className="text-gray-400 hover:text-red-500 transition-colors"
-                  title="Supprimer"
-                >
-                  <FaTrash size={14} />
-                </button>
-              )}
+            <div>
+              <h4 className="font-semibold text-gray-800">{comment.user.name}</h4>
+              <p className="text-sm text-gray-500">{new Date(comment.created_at).toLocaleString()}</p>
             </div>
           </div>
         </div>
@@ -118,7 +105,6 @@ const Comment = ({ comment, onReply, onDelete, isAuthenticated, currentUserId })
                     key={reply.id}
                     comment={reply}
                     onReply={onReply}
-                    onDelete={onDelete}
                     isAuthenticated={isAuthenticated}
                     currentUserId={currentUserId}
                   />
@@ -192,28 +178,6 @@ const CommentsSection = ({ productId }) => {
             });
           });
           break;
-        case 'comment:deleted':
-          setComments(prevComments => 
-            prevComments.filter(comment => {
-              // If this is the comment to delete, filter it out
-              if (comment.id === data.commentId) return false;
-              
-              // If the comment has replies, filter out the deleted reply
-              if (comment.replies && comment.replies.length > 0) {
-                comment.replies = comment.replies.filter(reply => {
-                  // If this reply is the one to delete, filter it out
-                  if (reply.id === data.commentId) return false;
-                  // If the reply has nested replies, filter out the deleted reply
-                  if (reply.replies && reply.replies.length > 0) {
-                    reply.replies = reply.replies.filter(nestedReply => nestedReply.id !== data.commentId);
-                  }
-                  return true;
-                });
-              }
-              return true;
-            })
-          );
-          break;
       }
     };
 
@@ -285,40 +249,6 @@ const CommentsSection = ({ productId }) => {
     }
   };
 
-  const handleDelete = async (commentId) => {
-    if (!token || !window.confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) {
-      return;
-    }
-
-    try {
-      await commentsService.deleteComment(commentId, token);
-      
-      // Update the UI immediately by filtering out the deleted comment
-      setComments(prevComments => {
-        const filterComments = (comments) => {
-          return comments.filter(comment => {
-            if (comment.id === commentId) {
-              return false;
-            }
-            
-            if (comment.replies && comment.replies.length > 0) {
-              comment.replies = filterComments(comment.replies);
-            }
-            
-            return true;
-          });
-        };
-        
-        return filterComments(prevComments);
-      });
-      
-      setError(null);
-    } catch (error) {
-      console.error('Error deleting comment:', error);
-      setError('Failed to delete comment');
-    }
-  };
-
   return (
     <div className="my-12">
       <h2 className="text-2xl font-semibold mb-6">Commentaires</h2>
@@ -387,7 +317,6 @@ const CommentsSection = ({ productId }) => {
               key={comment.id}
               comment={comment}
               onReply={handleReply}
-              onDelete={handleDelete}
               isAuthenticated={!!user}
               currentUserId={user?.id}
             />

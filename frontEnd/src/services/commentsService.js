@@ -50,18 +50,3 @@ export const createReply = async (commentId, content, productId, token) => {
 
   return response.json();
 };
-
-export const deleteComment = async (commentId, token) => {
-  const response = await fetch(`${API_URL}/comments/${commentId}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
-  
-  if (!response.ok) {
-    throw new Error('Failed to delete comment');
-  }
-
-  return true;
-};

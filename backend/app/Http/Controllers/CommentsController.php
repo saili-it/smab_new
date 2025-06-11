@@ -100,17 +100,4 @@ class CommentsController extends Controller
         }
     }
 
-    public function destroy($commentId)
-    {
-        $comment = Comment::where('id', $commentId)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
-
-        $comment->delete();
-
-        // Broadcast to WebSocket
-        broadcast(new CommentDeleted($commentId))->toOthers();
-
-        return response()->json(['message' => 'Comment deleted']);
-    }
 }
