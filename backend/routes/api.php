@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\NotificationsController;
 
 Route::group([
     'middleware' => 'api',
@@ -23,11 +24,18 @@ Route::group([
 // Public comment routes
 Route::get('/products/{productId}/comments', [CommentsController::class, 'index']);
 
-// Protected comment routes
+// Protected routes
 Route::group([
     'middleware' => ['api', 'auth:api']
 ], function () {
+    // Existing routes
     Route::post('/products/{productId}/comments', [CommentsController::class, 'store']);
     Route::post('/comments/{commentId}/replies', [CommentsController::class, 'reply']);
+
+    // Notification routes
+    Route::get('/notifications', [NotificationsController::class, 'index']);
+    Route::get('/notifications/unread-count', [NotificationsController::class, 'getUnreadCount']);
+    Route::post('/notifications/{id}/mark-as-read', [NotificationsController::class, 'markAsRead']);
+    Route::post('/notifications/mark-all-as-read', [NotificationsController::class, 'markAllAsRead']);
 });
 

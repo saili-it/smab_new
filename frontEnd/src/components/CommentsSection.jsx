@@ -7,8 +7,14 @@ import * as commentsService from '../services/commentsService';
 
 const Comment = ({ comment, onReply, isAuthenticated, currentUserId }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
-  const [replyContent, setReplyContent] = useState('');
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [replyContent, setReplyContent] = useState('');  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Auto-expand when new replies are added
+  useEffect(() => {
+    if (comment.replies && comment.replies.length > 0) {
+      setIsExpanded(true);
+    }
+  }, [comment.replies]);
 
   const handleReplySubmit = (e) => {
     e.preventDefault();
@@ -125,6 +131,9 @@ const CommentsSection = ({ productId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const wsRef = useRef(null);
+  const reconnectAttemptsRef = useRef(0);
+  const maxReconnectAttempts = 5;
+  const reconnectDelay = 1000; // 1 second
 
   // Helper function to recursively update replies
   const updateRepliesRecursively = (replies, parentId, newReply) => {
@@ -146,43 +155,135 @@ const CommentsSection = ({ productId }) => {
       return reply;
     });
   };
+  const connectWebSocket = () => {
+    const wsHost = import.meta.env.VITE_PUSHER_HOST || '127.0.0.1';
+    const wsPort = import.meta.env.VITE_PUSHER_PORT || '6001';
+    const appKey = import.meta.env.VITE_PUSHER_APP_KEY;
+    
+    try {
+      const ws = new WebSocket(`ws://${wsHost}:${wsPort}/app/${appKey}`);
+      wsRef.current = ws;      ws.onopen = () => {
+        console.log('WebSocket connection established');
+        reconnectAttemptsRef.current = 0; // Reset reconnect attempts on successful connection
+        
+        // First send a connection request
+        ws.send(JSON.stringify({
+          event: 'pusher:connection',
+          data: {
+            auth: token,
+            socket_id: Date.now().toString()
+          }
+        }));
+      };
 
-  useEffect(() => {
-    // Initialize WebSocket connection
-    const ws = new WebSocket(`${import.meta.env.VITE_WS_URL}/comments`);
-    wsRef.current = ws;
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
 
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      
-      switch (data.type) {
-        case 'comment:created':
-          setComments(prevComments => [data.comment, ...prevComments]);
-          break;
-        case 'comment:replied':
-          setComments(prevComments => {
-            return prevComments.map(comment => {
-              if (comment.id === data.parentId) {
-                return {
-                  ...comment,
-                  replies: [...(comment.replies || []), data.reply]
-                };
+      ws.onclose = () => {
+        console.log('WebSocket connection closed');
+        if (reconnectAttemptsRef.current < maxReconnectAttempts) {
+          reconnectAttemptsRef.current++;
+          console.log(`Attempting to reconnect (${reconnectAttemptsRef.current}/${maxReconnectAttempts})...`);
+          setTimeout(connectWebSocket, reconnectDelay);
+        }
+      };      ws.onmessage = (event) => {
+        try {
+          const response = JSON.parse(event.data);
+            // Handle connection response
+          if (response.event === 'pusher:connection_established') {
+            console.log('Connection established with server');
+            const channel = `comments.${productId}`;
+            ws.send(JSON.stringify({
+              event: 'pusher:subscribe',
+              data: {
+                channel,
+                auth: null // Public channel doesn't need auth
               }
-              if (comment.replies && comment.replies.length > 0) {
-                return {
-                  ...comment,
-                  replies: updateRepliesRecursively(comment.replies, data.parentId, data.reply)
-                };
-              }
-              return comment;
-            });
-          });
-          break;
+            }));
+            return;
+          }
+          
+          // Handle subscription success
+          if (response.event === 'pusher_internal:subscription_succeeded') {
+            console.log('Successfully subscribed to channel');
+            return;
+          }          // Handle actual message events
+          if (response.event) {
+            const data = JSON.parse(response.data);
+            console.log('Received event:', response.event, data);
+            switch (response.event) {
+              case 'comment.created':
+                // Only add comment if it's not from the current user
+                if (data.comment.user_id !== user?.id) {
+                  setComments(prevComments => {
+                    // Check if comment already exists to prevent duplication
+                    const exists = prevComments.some(c => c.id === data.comment.id);
+                    if (!exists) {
+                      return [data.comment, ...prevComments];
+                    }
+                    return prevComments;
+                  });
+                }
+                break;              case 'comment.replied':
+                console.log('Received reply:', data);
+                if (data.reply.user_id !== user?.id) { // Only update if reply is not from current user
+                  setComments(prevComments => {
+                    return prevComments.map(comment => {
+                      // Direct parent comment
+                      if (comment.id === data.parentId) {
+                        // Check if reply already exists
+                        const replyExists = (comment.replies || []).some(r => r.id === data.reply.id);
+                        if (!replyExists) {
+                          return {
+                            ...comment,
+                            replies: [...(comment.replies || []), {
+                              ...data.reply,
+                              user: data.reply.user, // Ensure user data is preserved
+                              replies: [], // Initialize empty replies array for nested replies
+                            }]
+                          };
+                        }
+                        return comment;
+                      }
+                      // Check for replies in nested comments
+                      if (comment.replies && comment.replies.length > 0) {
+                        return {
+                          ...comment,
+                          replies: updateRepliesRecursively(comment.replies, data.parentId, {
+                            ...data.reply,
+                            user: data.reply.user, // Ensure user data is preserved
+                            replies: [], // Initialize empty replies array for nested replies
+                          })
+                        };
+                      }
+                      return comment;
+                    });
+                  });
+                }
+                break;
+            }
+          }
+        } catch (error) {
+          console.error('Error processing WebSocket message:', error);
+        }
+      };
+    } catch (error) {
+      console.error('Error creating WebSocket connection:', error);
+      // Attempt to reconnect on connection error
+      if (reconnectAttemptsRef.current < maxReconnectAttempts) {
+        reconnectAttemptsRef.current++;
+        console.log(`Attempting to reconnect (${reconnectAttemptsRef.current}/${maxReconnectAttempts})...`);
+        setTimeout(connectWebSocket, reconnectDelay);
       }
-    };
-
+    }
+  };
+  useEffect(() => {
     // Fetch initial comments
     fetchComments();
+    
+    // Setup WebSocket connection
+    connectWebSocket();
 
     return () => {
       if (wsRef.current) {
@@ -203,40 +304,38 @@ const CommentsSection = ({ productId }) => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleCommentSubmit = async (e) => {
+  };  const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!newComment.trim() || !token) return;
 
     try {
-      const newCommentData = await commentsService.createComment(productId, newComment, token);
-      setComments(prevComments => [newCommentData, ...prevComments]);
+      const comment = await commentsService.createComment(productId, newComment, token);
+      // Add comment immediately for better UX, WebSocket will sync state with others
+      setComments(prevComments => [comment, ...prevComments]);
       setNewComment('');
       setError(null);
     } catch (error) {
       console.error('Error posting comment:', error);
       setError('Failed to post comment');
     }
-  };
-
-  const handleReply = async (commentId, content) => {
+  };  const handleReply = async (commentId, content) => {
     if (!content.trim() || !token) return;
 
     try {
-      const newReply = await commentsService.createReply(commentId, content, productId, token);
+      const reply = await commentsService.createReply(commentId, content, productId, token);
+      // Add reply immediately for better UX, WebSocket will sync state with others
       setComments(prevComments => {
         return prevComments.map(comment => {
           if (comment.id === commentId) {
             return {
               ...comment,
-              replies: [...(comment.replies || []), newReply]
+              replies: [...(comment.replies || []), reply]
             };
           }
           if (comment.replies && comment.replies.length > 0) {
             return {
               ...comment,
-              replies: updateRepliesRecursively(comment.replies, commentId, newReply)
+              replies: updateRepliesRecursively(comment.replies, commentId, reply)
             };
           }
           return comment;

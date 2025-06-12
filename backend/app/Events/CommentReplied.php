@@ -24,6 +24,19 @@ class CommentReplied implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('comments');
+        return new Channel('comments.' . $this->reply->product_id);
+    }
+
+    public function broadcastAs()
+    {
+        return 'comment.replied';
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'reply' => $this->reply->load(['user:id,name']),
+            'parentId' => $this->parentId
+        ];
     }
 }

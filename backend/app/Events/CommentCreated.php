@@ -22,6 +22,18 @@ class CommentCreated implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('comments');
+        return new Channel('comments.' . $this->comment->product_id);
+    }
+
+    public function broadcastAs()
+    {
+        return 'comment.created';
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'comment' => $this->comment->load(['user:id,name', 'replies.user:id,name'])
+        ];
     }
 }

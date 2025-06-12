@@ -138,11 +138,7 @@ const Navigation = () => {
               <Link to="/contact" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
                 Contact
               </Link>
-              {user &&
-                <Link to="/dashboard" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
-                  MY SMAB
-                </Link>
-              }
+              
 
               {/* Cart Icon */}
               <Link to="/cart" className="relative">
