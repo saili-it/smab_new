@@ -6,7 +6,7 @@ import { FaSearch, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa'
 import { categories } from '../data/categories';
 import { useSelector } from 'react-redux';
 
-const Navigation = () => {
+const Navigation = ({ children }) => {
   const { user, logout } = useAuth()
   const cartItems = useSelector(state => state.cart.items);
   const [isOpen, setIsOpen] = useState(false)
@@ -75,6 +75,8 @@ const Navigation = () => {
                     <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.635 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
                     MY SMAB
                   </Link>
+                  <span className="h-4 border-l border-white/40 mx-2"></span>
+                  {children} {/* NotificationMenu will render here */}
                   <span className="h-4 border-l border-white/40 mx-2"></span>
                   <button onClick={logout} className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
                     <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1' /></svg>

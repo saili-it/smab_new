@@ -27,17 +27,22 @@ class CreateReplyNotification implements ShouldQueue
 
         // Notify the parent comment author
         if ($parentComment && $parentComment->user_id != $reply->user_id) {
-            $notification = Notification::create([
-                'user_id' => $parentComment->user_id,
-                'type' => 'reply',
-                'comment_id' => $reply->id,
-                'product_id' => $reply->product_id,
-                'read' => false,
-                'message' => "{$reply->user->name} replied to your comment"
-            ]);
+            // Check for existing notification to prevent duplicates
+            $exists = Notification::where('user_id', $parentComment->user_id)
+                ->where('type', 'reply')
+                ->where('comment_id', $reply->id)
+                ->exists();
 
-            // Broadcast the notification
-            event(new NotificationCreated($notification));
+            if (!$exists) {
+                $notification = Notification::create([
+                    'user_id' => $parentComment->user_id,
+                    'type' => 'reply',
+                    'comment_id' => $reply->id,
+                    'product_id' => $reply->product_id,
+                    'read' => false,
+                    'message' => "{$reply->user->name} replied to your comment"
+                ]);
+            }
         }
     }
 }

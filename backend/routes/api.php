@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Broadcast;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\NotificationsController;
@@ -28,14 +29,19 @@ Route::get('/products/{productId}/comments', [CommentsController::class, 'index'
 Route::group([
     'middleware' => ['api', 'auth:api']
 ], function () {
-    // Existing routes
-    Route::post('/products/{productId}/comments', [CommentsController::class, 'store']);
-    Route::post('/comments/{commentId}/replies', [CommentsController::class, 'reply']);
-
+    // Broadcasting authentication
+    Route::post('/broadcasting/auth', function (Request $request) {
+        return Broadcast::auth($request);
+    });
+    
     // Notification routes
     Route::get('/notifications', [NotificationsController::class, 'index']);
     Route::get('/notifications/unread-count', [NotificationsController::class, 'getUnreadCount']);
     Route::post('/notifications/{id}/mark-as-read', [NotificationsController::class, 'markAsRead']);
     Route::post('/notifications/mark-all-as-read', [NotificationsController::class, 'markAllAsRead']);
+
+    // Comment routes
+    Route::post('/products/{productId}/comments', [CommentsController::class, 'store']);
+    Route::post('/comments/{commentId}/replies', [CommentsController::class, 'reply']);
 });
 

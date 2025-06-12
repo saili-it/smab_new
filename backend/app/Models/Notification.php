@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Events\NotificationCreated;
 
 class Notification extends Model
 {
@@ -22,16 +21,6 @@ class Notification extends Model
     protected $casts = [
         'read' => 'boolean'
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        // Automatically broadcast the notification when created
-        static::created(function ($notification) {
-            broadcast(new NotificationCreated($notification))->toOthers();
-        });
-    }
 
     public function user()
     {

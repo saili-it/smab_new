@@ -44,14 +44,9 @@ class CommentsController extends Controller
             ]);
 
             $comment->load(['user:id,name']);
-
-            // Optional: Broadcast the event
-            try {
-                broadcast(new CommentCreated($comment))->toOthers();
-            } catch (\Exception $e) {
-                // Log broadcasting error but don't fail the request
-                \Log::error('Broadcasting error: ' . $e->getMessage());
-            }
+            
+            // Dispatch the event - it will handle broadcasting internally
+            event(new CommentCreated($comment));
 
             return response()->json($comment, 201);
         } catch (\Exception $e) {
