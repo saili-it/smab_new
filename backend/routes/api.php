@@ -45,3 +45,6 @@ Route::group([
     Route::post('/comments/{commentId}/replies', [CommentsController::class, 'reply']);
 });
 
+// Contact form route
+Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit']);
+

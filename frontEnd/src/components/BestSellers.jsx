@@ -84,23 +84,6 @@ const BestSellers = ({ title, products,category }) => {
           ))}
         </div>
 
-        {/* View All Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-center"
-        >
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-2 bg-[#e63812] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#ff6b4a] transition-all duration-300 shadow-lg hover:shadow-xl"
-          >
-            Voir tous nos produits
-            <FaArrowRight className="text-lg" />
-          </motion.button>
-        </motion.div>
       </div>
     </section>
   );

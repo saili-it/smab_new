@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
+import logo from '../assets/logos/LOGO-SMAB-CROP-1.png'; 
 
 const Hero = ({ videoUrl, imageUrl, title, subtitle, overlay = true, showLogo = false, showButton = false }) => {
   return (
@@ -30,7 +31,7 @@ const Hero = ({ videoUrl, imageUrl, title, subtitle, overlay = true, showLogo = 
       <div className="relative h-full flex flex-col items-center justify-center text-white px-4 md:px-8">
         {showLogo && (
           <img 
-            src="/src/assets/logos/LOGO-SMAB-CROP-1.png" 
+            src={logo} 
             alt="SMAB Logo" 
             className="w-48 md:w-64 mb-8"
           />

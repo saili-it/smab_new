@@ -111,7 +111,7 @@ const Cart = () => {
                     </div>
                     <div className="flex-shrink-0">
                       <a
-                        href={`https://wa.me/+212000000000?text=Bonjour,%0A%0AJe suis intéressé par le produit suivant :%0A%0A▫️ Référence : ${item.ref}%0A▫️ Désignation : ${item.name}%0A▫️ Quantité souhaitée : ${item.quantity}%0A%0APouvez-vous me faire parvenir un devis détaillé pour ce produit ?%0A%0AMerci.`}
+                        href={`https://wa.me/212766074939?text=Bonjour,%0A%0AJe suis intéressé par le produit suivant :%0A%0A▫️ Référence : ${item.ref}%0A▫️ Désignation : ${item.name}%0A▫️ Quantité souhaitée : ${item.quantity}%0A%0APouvez-vous me faire parvenir un devis détaillé pour ce produit ?%0A%0AMerci.`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-medium hover:bg-green-500 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5"
@@ -129,7 +129,7 @@ const Cart = () => {
               <h3 className="text-2xl font-bold mb-8">Actions groupées</h3>
               <div className="space-y-4">
                 <a
-                  href={`https://wa.me/+212000000000?text=Bonjour,%0A%0AJe souhaite recevoir un devis pour les produits suivants :%0A%0A${cartItems.map((item, index) => `${index + 1}) Réf : ${item.reference}%0A   Désignation : ${item.name}%0A   Quantité : ${item.quantity}`).join('%0A%0A')}%0A%0AMerci de me faire parvenir un devis détaillé.%0A%0ACordialement.`}
+                  href={`https://wa.me/212766074939?text=Bonjour,%0A%0AJe souhaite recevoir un devis pour les produits suivants :%0A%0A${cartItems.map((item, index) => `${index + 1}) Réf : ${item.reference}%0A   Désignation : ${item.name}%0A   Quantité : ${item.quantity}`).join('%0A%0A')}%0A%0AMerci de me faire parvenir un devis détaillé.%0A%0ACordialement.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-4 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-500 transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg transform hover:-translate-y-0.5"

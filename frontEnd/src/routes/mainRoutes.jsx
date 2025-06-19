@@ -14,11 +14,21 @@ import Login from '../pages/Login'
 import Register from '../pages/Register'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
+import CGV from '../pages/CGV'
+import MentionLegal from '../pages/MentionLegal'
 
 export const mainRoutes = [
   {
     index: true,
     element: <Home />
+  },
+  {
+    path: 'cgv',
+    element: <CGV />
+  },
+  {
+    path: 'mention-legal',
+    element: <MentionLegal />
   },
   {
     path: 'login',

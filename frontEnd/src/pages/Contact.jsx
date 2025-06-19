@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
+import { submitContactForm } from '../services/contactService';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,21 +10,50 @@ const Contact = () => {
     subject: '',
     phone: '',
     message: ''
-  })
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: '', content: '' });
+  const phoneNumber = '+212 766-074939';
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Handle form submission here
-    console.log('Form submitted:', formData)
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage({ type: '', content: '' });
+
+    try {
+      await submitContactForm(formData);
+      setMessage({
+        type: 'success',
+        content: 'Votre message a été envoyé avec succès!'
+      });
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        phone: '',
+        message: ''
+      });
+    } catch (error) {
+      setMessage({
+        type: 'error',
+        content: error.message || 'Une erreur est survenue. Veuillez réessayer.'
+      });
+    }
+    setLoading(false);
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
-    }))
-  }
+    }));
+  };
+
+  const handleWhatsAppClick = () => {
+    window.open(`https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`, '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -64,7 +94,19 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Notre adresse</h3>
-                    <p className="text-gray-600">Bd El Qods, Rue 7 N° 3, Q.I Sidi Bernoussi, Casablanca</p>
+                    <p className="text-gray-600">21, bd Lahcen Ou Idder 20000 Casablanca</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="bg-[#e63812]/10 p-3 rounded-lg cursor-pointer" onClick={handleWhatsAppClick}>
+                    <FaWhatsapp className="text-[#e63812] text-xl" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-1">WhatsApp</h3>
+                    <p className="text-gray-600 cursor-pointer hover:text-[#e63812]" onClick={handleWhatsAppClick}>
+                      {phoneNumber}
+                    </p>
                   </div>
                 </div>
 
@@ -74,7 +116,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Téléphone</h3>
-                    <p className="text-gray-600">+212 522 766 669</p>
+                    <p className="text-gray-600">{phoneNumber}</p>
                   </div>
                 </div>
 
@@ -84,7 +126,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
-                    <p className="text-gray-600">contact@smab.ma</p>
+                    <p className="text-gray-600">contact@smab-co.com</p>
                   </div>
                 </div>
               </div>
@@ -100,6 +142,19 @@ const Contact = () => {
           >
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Envoyez-nous un message</h2>
+              
+              {message.content && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`rounded-lg p-4 mb-6 ${
+                    message.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+                  }`}
+                >
+                  <div className="text-sm">{message.content}</div>
+                </motion.div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -172,9 +227,14 @@ const Contact = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   type="submit"
-                  className="bg-[#e63812] text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-[#d32f0f] transition-all duration-300"
+                  disabled={loading}
+                  className="bg-[#e63812] text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-[#d32f0f] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
-                  Envoyer le message
+                  {loading ? (
+                    <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    'Envoyer le message'
+                  )}
                 </motion.button>
               </form>
             </div>

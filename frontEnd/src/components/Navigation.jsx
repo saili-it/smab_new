@@ -1,25 +1,79 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect, useCallback } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { FaSearch, FaShoppingCart, FaBars, FaTimes, FaSpinner } from 'react-icons/fa'
 import { useAuth } from '../store/AuthContext'
+import { useSelector } from 'react-redux'
 import logo from '../assets/logos/LOGO-SMAB-CROP-1.png'
-import { FaSearch, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa'
-import { categories } from '../data/categories';
-import { useSelector } from 'react-redux';
+import { categories } from '../data/categories'
+import { searchProducts } from '../services/productService'
 
 const Navigation = ({ children }) => {
   const { user, logout } = useAuth()
-  const cartItems = useSelector(state => state.cart.items);
+  const cartItems = useSelector(state => state.cart.items)
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [showDropdown, setShowDropdown] = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
   const [showSideNav, setShowSideNav] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null)
+  const navigate = useNavigate()
+
+  // Use useCallback to memoize the search function
+  const searchWithDebounce = useCallback(
+    async (query) => {
+      if (!query.trim()) {
+        setSearchResults([]);
+        setShowDropdown(false);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const results = await searchProducts(query);
+        setSearchResults(results);
+        setShowDropdown(true);
+      } catch (error) {
+        console.error('Search error:', error);
+        setSearchResults([]);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [] // No dependencies needed
+  );
+
+  // Use useEffect to handle the API call with debounce
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery) {
+        searchWithDebounce(searchQuery);
+      }
+    }, 300); // Wait for 300ms after the user stops typing
+
+    return () => clearTimeout(timer);
+  }, [searchQuery, searchWithDebounce]);
 
   const handleSearch = (e) => {
-    e.preventDefault()
-    if (!searchQuery.trim()) return
-    window.location.href = `/search?q=${encodeURIComponent(searchQuery.trim())}`
-  }
+    setSearchQuery(e.target.value);
+  };
+  const handleProductClick = (product) => {
+    setShowDropdown(false); // Only close the dropdown
+    navigate(`/produit/${product.ProductLabel}?id=${product.ProductId}`);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.search-container')) {
+        setShowDropdown(false); // Only close the dropdown
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,66 +92,105 @@ const Navigation = ({ children }) => {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [showSideNav])
+  
+  const SearchInput = () => {
+    const inputRef = React.useRef(null);
+    // Focus the input when clicking anywhere in the search container
+    const handleContainerClick = () => {
+      inputRef.current?.focus();
+    };
 
-  const SearchInput = () => (
-    <form onSubmit={handleSearch} className="relative">
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Rechercher un produit..."
-        className="w-full pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#e63812] bg-white"
-      />
-      <button
-        type="submit"
-        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#e63812]"
-      >
-        <FaSearch className="text-xl" />
-      </button>
-    </form>
-  )
+    return (
+      <div className="search-container relative w-full max-w-md" onClick={handleContainerClick}>
+        <div className="relative">
+          <input
+            ref={inputRef}
+            type="text"
+            value={searchQuery}
+            onChange={handleSearch}
+            placeholder="Rechercher un produit..."
+            className="w-full pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#e63812] bg-white"
+          />
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            {isLoading ? (
+              <FaSpinner className="animate-spin text-xl" />
+            ) : (
+              <FaSearch className="text-xl" />
+            )}
+          </div>
+        </div>
+
+        {/* Search Results Dropdown */}
+        {showDropdown && searchResults?.products?.length > 0 && (
+          <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-96 overflow-y-auto">
+            {searchResults.products.map((product) => (
+              <div
+                key={product.ProductId}
+                onClick={() => handleProductClick(product)}
+                className="p-3 hover:bg-gray-100 cursor-pointer flex items-center border-b last:border-b-0"
+              >
+                <div className="w-full">
+                  <div className="font-medium text-gray-800">{product.ProductLabel}</div>
+                  <div className="text-sm text-gray-600">Ref: {product.ProductRef}</div>
+                  <div className="text-sm text-gray-500">Stock: {product.StockQuantity}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* No Results Message */}
+        {showDropdown && searchQuery && !isLoading && (!searchResults?.products || searchResults.products.length === 0) && (
+          <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4">
+            <p className="text-gray-500 text-center">Aucun résultat trouvé</p>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="fixed w-full top-0 z-50">
       {/* Top Bar */}
       <div className="bg-gradient-to-r from-[#e63812] to-[#ff6b4a] text-white py-2">
-        <div className="container mx-auto px-4">          <div className="flex justify-between items-center text-sm">
-            <div className="flex items-center space-x-4">
-              <a href="tel:+1234567890" className="hover:text-gray-200">+123 456 7890</a>
-              <span>|</span>
-              <a href="mailto:contact@smab.com" className="hover:text-gray-200">contact@smab.com</a>
-            </div>
-            {/* Auth Links */}
-            <div className="flex items-center gap-3 mt-1 sm:mt-0">
-              {user ? (
-                <>
-                  <Link to="/dashboard" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
-                    <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.635 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
-                    MY SMAB
-                  </Link>
-                  <span className="h-4 border-l border-white/40 mx-2"></span>
-                  {children} {/* NotificationMenu will render here */}
-                  <span className="h-4 border-l border-white/40 mx-2"></span>
-                  <button onClick={logout} className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
-                    <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1' /></svg>
-                    Déconnexion
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link to="/login" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
-                    <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.635 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
-                    Connexion
-                  </Link>
-                  <span className="h-4 border-l border-white/40 mx-2"></span>
-                  <Link to="/register" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
-                    <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' /></svg>
-                    Inscription
-                  </Link>
-                </>
-              )}
-            </div>
+        <div className="container mx-auto px-4">          
+        <div className="flex justify-between items-center text-sm">
+          <div className="flex items-center space-x-4">
+            <a href="tel:+1234567890" className="hover:text-gray-200">+212 766-074939</a>
+            <span>|</span>
+            <a href="mailto:contact@smab.com" className="hover:text-gray-200">contact@smab.com</a>
           </div>
+          {/* Auth Links */}
+          <div className="flex items-center gap-3 mt-1 sm:mt-0">
+            {user ? (
+              <>
+                <Link to="/dashboard" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
+                  <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.635 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
+                  MY SMAB
+                </Link>
+                <span className="h-4 border-l border-white/40 mx-2"></span>
+                {children} {/* NotificationMenu will render here */}
+                <span className="h-4 border-l border-white/40 mx-2"></span>
+                <button onClick={logout} className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
+                  <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1' /></svg>
+                  Déconnexion
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
+                  <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.635 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
+                  Connexion
+                </Link>
+                <span className="h-4 border-l border-white/40 mx-2"></span>
+                <Link to="/register" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
+                  <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' /></svg>
+                  Inscription
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
         </div>
       </div>
 
@@ -120,15 +213,15 @@ const Navigation = ({ children }) => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">              <button
-                className="nav-trigger flex items-center text-gray-700 hover:text-[#e63812] font-medium transition-colors"
-                onClick={() => setShowSideNav(!showSideNav)}
-              >
-                <FaBars className="mr-2" />
-                Toutes les catégories
-              </button>              
+              className="nav-trigger flex items-center text-gray-700 hover:text-[#e63812] font-medium transition-colors"
+              onClick={() => setShowSideNav(!showSideNav)}
+            >
+              <FaBars className="mr-2" />
+              Toutes les catégories
+            </button>
               <Link to="/services" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
                 Nos services
-              </Link>              
+              </Link>
               <Link to="/conseils" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
                 Nos conseils
               </Link>
@@ -140,7 +233,7 @@ const Navigation = ({ children }) => {
               <Link to="/contact" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
                 Contact
               </Link>
-              
+
 
               {/* Cart Icon */}
               <Link to="/cart" className="relative">
@@ -151,8 +244,8 @@ const Navigation = ({ children }) => {
               </Link>
             </div>
           </div>
-        </div>       
-         {/* Side Navigation */}        
+        </div>
+        {/* Side Navigation */}
         <div className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-all duration-500 z-50 ${showSideNav ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
           <div className={`side-nav fixed inset-y-0 left-0 w-72 bg-white/95 backdrop-blur-md shadow-2xl transform transition-all duration-500 ease-out ${showSideNav ? 'translate-x-0' : '-translate-x-full'}`}>
             <div className="flex flex-col h-full">
@@ -376,7 +469,7 @@ const Navigation = ({ children }) => {
                           {cartItems.length}
                         </span>
                       </Link>
-                      
+
                       {/* Auth Links */}
                       <div className="mt-4 border-t border-gray-100 pt-4">
                         {user ? (

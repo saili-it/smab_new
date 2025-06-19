@@ -12,12 +12,20 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
-  const id = searchParams.get('id');
-  const [product, setProduct] = useState(null);
+  const id = searchParams.get('id');  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [error, setError] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  
+  // Separate images and PDFs
+  const getFilteredMedia = (files) => {
+    if (!files) return { images: [], pdfs: [] };
+    return {
+      images: files.filter(file => !file.toLowerCase().endsWith('.pdf')),
+      pdfs: files.filter(file => file.toLowerCase().endsWith('.pdf'))
+    };
+  };
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -91,33 +99,36 @@ const ProductDetails = () => {
       </div>
     );
   }
-
   const handleNextImage = () => {
+    const images = getFilteredMedia(product.ImageFilenames).images;
     setCurrentImageIndex((prev) => 
-      prev === (product.ImageFilenames?.length - 1) ? 0 : prev + 1
+      prev === (images.length - 1) ? 0 : prev + 1
     );
   };
 
   const handlePrevImage = () => {
+    const images = getFilteredMedia(product.ImageFilenames).images;
     setCurrentImageIndex((prev) => 
-      prev === 0 ? (product.ImageFilenames?.length - 1) : prev - 1
+      prev === 0 ? (images.length - 1) : prev - 1
     );
-  };
-  const handleAddToCart = () => {
+  };  const handleAddToCart = () => {
     if (product) {
       // Strip HTML tags for cart preview
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = product.shortDescription || product.ProductDescription;
       const strippedDescription = tempDiv.textContent || tempDiv.innerText || '';
       
+      const images = getFilteredMedia(product.ImageFilenames).images;
+      const imageUrl = images.length > 0
+        ? `https://www.kelmohub.com/product-images/${product.ProductRef}/${images[0]}`
+        : '';
+
       dispatch(addToCart({
         id: product.ProductId,
         name: product.ProductLabel,
-        description: strippedDescription.substring(0, 150) + (strippedDescription.length > 150 ? '...' : ''), // Limit description length
-        image: product.ImageFilenames?.length > 0
-          ? `https://www.kelmohub.com/product-images/${product.ProductRef}/${product.ImageFilenames[0]}`
-          : '',
-        productRef: product.ProductRef, // Include product reference
+        description: strippedDescription.substring(0, 150) + (strippedDescription.length > 150 ? '...' : ''),
+        image: imageUrl,
+        productRef: product.ProductRef,
         quantity: 1
       }));
     }
@@ -130,10 +141,6 @@ const ProductDetails = () => {
           <div className="flex items-center space-x-2 text-sm">
             <Link to="/" className="text-gray-600 hover:text-[#e63812]">
               Accueil
-            </Link>
-            <FaChevronRight className="text-gray-400" />
-            <Link to="/activite" className="text-gray-600 hover:text-[#e63812]">
-              Nos Produits
             </Link>
             <FaChevronRight className="text-gray-400" />
             <span className="text-gray-800 font-medium">
@@ -160,22 +167,25 @@ const ProductDetails = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="space-y-6"
-            >
-              {/* Main Image */}
-              <div className="bg-white rounded-2xl p-4 shadow-lg">
-                <div className="aspect-w-4 aspect-h-3 overflow-hidden rounded-xl">
-                  <img
-                    src={`https://www.kelmohub.com/product-images/${product.ProductRef}/${product.ImageFilenames[currentImageIndex]}`}
-                    alt={product.ProductLabel}
-                    className="w-full h-full object-contain"
-                  />
+            >              {/* Main Image */}
+              {getFilteredMedia(product.ImageFilenames).images.length > 0 && (
+                <div className="bg-white rounded-2xl p-4 shadow-lg">
+                  <div className="aspect-w-4 aspect-h-3 overflow-hidden rounded-xl">
+                    <img
+                      src={`https://www.kelmohub.com/product-images/${product.ProductRef}/${getFilteredMedia(product.ImageFilenames).images[currentImageIndex]}`}
+                      alt={product.ProductLabel}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
+
+
 
               {/* Thumbnails */}
-              {product.ImageFilenames?.length > 1 && (
+              {getFilteredMedia(product.ImageFilenames).images.length > 1 && (
                 <div className="grid grid-cols-5 gap-3">
-                  {product.ImageFilenames.map((image, index) => (
+                  {getFilteredMedia(product.ImageFilenames).images.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
@@ -274,7 +284,7 @@ const ProductDetails = () => {
               )}
 
               {/* Long Description */}
-              {product.ProductDescription && (
+              {product.longDescription && (
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -286,7 +296,7 @@ const ProductDetails = () => {
                   <div 
                     className="prose prose-lg max-w-none text-gray-600 [&>ul]:list-disc [&>ul]:pl-6 [&>ol]:list-decimal [&>ol]:pl-6"
                     dangerouslySetInnerHTML={{ 
-                      __html: product.ProductDescription
+                      __html: product.longDescription
                     }}
                   />
                 </motion.div>
@@ -357,7 +367,7 @@ const ProductDetails = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Request Technical Sheet via WhatsApp */}
                     <a
-                      href={`https://wa.me/212666441894?text=Bonjour, je souhaite recevoir la fiche technique du produit: ${product.ProductLabel} (Réf: ${product.ProductRef})`}
+                      href={`https://wa.me/212766074939?text=Bonjour, je souhaite recevoir la fiche technique du produit: ${product.ProductLabel} (Réf: ${product.ProductRef})`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center w-full bg-green-600 text-white px-6 py-4 rounded-xl font-semibold hover:bg-green-500 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
@@ -371,7 +381,7 @@ const ProductDetails = () => {
 
                     {/* Request Quote via WhatsApp */}
                     <a
-                      href={`https://wa.me/212666441894?text=Bonjour, je souhaite avoir un devis pour le produit: ${product.ProductLabel} (Réf: ${product.ProductRef})`}
+                      href={`https://wa.me/212766074939?text=Bonjour, je souhaite avoir un devis pour le produit: ${product.ProductLabel} (Réf: ${product.ProductRef})`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center w-full bg-green-600 text-white px-6 py-4 rounded-xl font-semibold hover:bg-green-500 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"

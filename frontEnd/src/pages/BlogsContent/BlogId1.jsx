@@ -1,5 +1,8 @@
 import React from 'react';
 import BlogImageId1 from '../../assets/images/blogs/blog1.png';
+import agroFoodImg from '../../assets/images/blogs/blog2.png';
+import cosmeticImg from '../../assets/images/blogs/blog3.png';
+
 
 const BlogId1 = () => {
     return (
@@ -20,7 +23,7 @@ const BlogId1 = () => {
             <section className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">1 - Industrie Agro-Food</h2>
                 <img 
-                    src="/Images/blogs/blog2.png" 
+                    src={agroFoodImg} 
                     alt="Industrie Agro-Food" 
                     className="w-full rounded-xl shadow-md mb-4"
                 />
@@ -36,15 +39,14 @@ const BlogId1 = () => {
                 </p>
             </section>
 
-            <section className="mb-12">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">3 - Industrie Cosmétique</h2>
+            <section className="mb-12">                <h2 className="text-2xl font-bold text-gray-800 mb-4">3 - Industrie Cosmétique</h2>
                 <img 
-                    src="/Images/blogs/blog3.png" 
-                    alt="Industrie Cosmétique" 
+                    src={cosmeticImg}
+                    alt="Industrie Cosmétique - Ingrédients naturels" 
                     className="w-full rounded-xl shadow-md mb-4"
                 />
                 <p className="text-gray-600 leading-relaxed">
-                   {` Le Maroc est reconnu pour ses ingrédients naturels de haute qualité, tels que l'huile d'argan et le ghassoul, qui sont très prisés dans l'industrie cosmétique mondiale. Les jeunes entrepreneurs peuvent capitaliser sur cette richesse en développant des produits cosmétiques naturels et biologiques.`}
+                   {`Le Maroc est reconnu pour ses ingrédients naturels de haute qualité, tels que l'huile d'argan et le ghassoul, qui sont très prisés dans l'industrie cosmétique mondiale. Les jeunes entrepreneurs peuvent capitaliser sur cette richesse en développant des produits cosmétiques naturels et biologiques.`}
                 </p>
             </section>
         </div>

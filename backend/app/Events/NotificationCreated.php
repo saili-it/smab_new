@@ -32,7 +32,7 @@ class NotificationCreated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('private-notifications.' . $this->notification->user_id)
+            new PrivateChannel('notifications.' . $this->notification->user_id)
         ];
     }
 
@@ -43,15 +43,12 @@ class NotificationCreated implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        // Include the needed relationships for displaying the notification
         return [
             'id' => $this->notification->id,
             'type' => $this->notification->type,
             'message' => $this->notification->message,
             'read' => $this->notification->read,
-            'created_at' => $this->notification->created_at,
-            'comment_id' => $this->notification->comment_id,
-            'product_id' => $this->notification->product_id
+            'created_at' => $this->notification->created_at
         ];
     }
 }

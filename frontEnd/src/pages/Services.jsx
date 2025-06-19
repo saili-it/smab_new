@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaCheckCircle } from 'react-icons/fa';
 import banner from '../assets/images/nos_service/0 - Banner nos services.png';
@@ -300,15 +301,16 @@ const Services = () => {
                 Prêt à commencer votre projet ?
               </h2>
               <p className="text-lg md:text-xl mb-8 text-gray-600">
-                Contactez-nous dès aujourd'hui pour discuter de vos besoins et découvrir comment nous pouvons vous aider.
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-[#e63812] to-[#ff6b4a] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform transition-all duration-300 hover:-translate-y-0.5"
-              >
-                Nous contacter
-              </motion.button>
+{`Contactez-nous dès aujourd'hui pour discuter de vos besoins et découvrir comment nous pouvons vous aider.`}
+              </p>              <Link to="/contact">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-[#e63812] to-[#ff6b4a] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  Nous contacter
+                </motion.button>
+              </Link>
             </div>
           </motion.div>
         </div>

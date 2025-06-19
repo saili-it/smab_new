@@ -74,7 +74,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/legal" className="text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-300 inline-block">
+                <Link to="/mention-legal" className="text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-300 inline-block">
                   Mentions légales
                 </Link>
               </li>

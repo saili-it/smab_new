@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProduitsCategory } from '../services/productService';
 import { motion } from 'framer-motion';
@@ -12,18 +12,21 @@ const SubActivity = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const searchInputRef = useRef(null);
 
   // Get current category and subcategory data
   const currentCategory = categories.find(cat => cat.slug === category);
+
   const currentSubcategory = currentCategory?.subcategories.find(
     sub => sub.slug.toLowerCase() === subcategory.toLowerCase()
   );
+
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const result = await getProduitsCategory(subcategory);
+        const result = await getProduitsCategory(currentSubcategory.name);
         const allProducts = result.products || [];
         
         
@@ -100,6 +103,7 @@ const SubActivity = () => {
           <div className="flex items-center justify-between gap-4 max-w-4xl mx-auto">
             <div className="flex-1 relative">
               <input
+                ref={searchInputRef}
                 type="text"
                 placeholder="Rechercher un produit..."
                 value={searchTerm}

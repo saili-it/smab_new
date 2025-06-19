@@ -39,7 +39,8 @@ const heroImages = {
 };
 
 // Categories that are coming soon
-const comingSoonCategories = ['broyage-mouture', 'extraction-fruits', 'nettoyage-separation'];
+const comingSoonCategories = [ 'extraction-fruits', 'nettoyage-separation'];
+
 
 // Subcategory icons mapping
 const subcategoryIcons = {
@@ -249,7 +250,7 @@ const Activity = () => {
                       description: product.shortDescription || product.ProductDescription || 'Description à venir',
                       image: product.ImageFilenames?.length > 0 
                         ? `https://www.kelmohub.com/product-images/${product.ProductRef}/${product.ImageFilenames[0]}` 
-                        : currentCategory?.image,
+                        : '',
                       category: category
                     }}
                   />

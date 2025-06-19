@@ -43,10 +43,10 @@ const Home = () => {
         const categories = ['Extraction des huiles', 'Packaging', 'Nettoyage et séparation', 'Extraction des fruits'];
         const productsPromises = categories.map(category => getProduitsCategory(category));
         const results = await Promise.all(productsPromises);
-        
+
         // Flatten the array and get all products
         const allProducts = results.flatMap(result => result.products || []);
-          // Shuffle array and get first 4 items
+        // Shuffle array and get first 4 items
         const shuffledProducts = allProducts
           .sort(() => Math.random() - 0.5)
           .slice(0, 4)
@@ -54,8 +54,8 @@ const Home = () => {
             id: product.ProductId,
             name: product.ProductLabel,
             description: product.shortDescription || product.ProductDescription || 'Description à venir',
-            image: product.ImageFilenames?.length > 0 
-              ? `https://www.kelmohub.com/product-images/${product.ProductRef}/${product.ImageFilenames[0]}` 
+            image: product.ImageFilenames?.length > 0
+              ? `https://www.kelmohub.com/product-images/${product.ProductRef}/${product.ImageFilenames[0]}`
               : extractionHuilesImg,
             category: product.category || "",
             productRef: product.ProductRef
@@ -79,15 +79,15 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen">      
-    <Hero
-      videoUrl={heroContent.videoUrl}
-      title={heroContent.title}
-      subtitle={heroContent.subtitle}
-      overlay={true}
-      showLogo={true}
-      showButton={true}
-    />
+    <div className="min-h-screen">
+      <Hero
+        videoUrl={heroContent.videoUrl}
+        title={heroContent.title}
+        subtitle={heroContent.subtitle}
+        overlay={true}
+        showLogo={true}
+        showButton={true}
+      />
 
       {/* USP Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50">
@@ -125,7 +125,8 @@ const Home = () => {
             <div
               key={index}
               className="group relative p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-            >                <div className="relative w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+            >
+              <div className="relative w-20 h-20 mx-auto mb-6 flex items-center justify-center">
                 <div className="absolute inset-0 bg-[#e63812]/10 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
                 <img
                   src={item.icon}
@@ -155,7 +156,8 @@ const Home = () => {
           {
             title: "EXTRACTION DES HUILES",
             description: "Solutions complètes pour l'extraction d'huiles",
-            image: extractionHuilesImg,            link: "/activite/extraction-des-huiles"
+            image: extractionHuilesImg, link: "/activite/extraction-des-huiles"
+            
           },
           {
             title: "PACKAGING",
@@ -166,7 +168,7 @@ const Home = () => {
           {
             title: "NETTOYAGE ET SÉPARATION",
             description: "Technologies avancées de traitement",
-            image: nettoyageImg,            
+            image: nettoyageImg,
             link: "/activite/nettoyage-et-separation"
           },
           {
@@ -185,7 +187,7 @@ const Home = () => {
             title: "BROYAGE ET MOUTURE",
             description: "Solutions de broyage industriel",
             image: broyageImg,
-            link: "/activite/broyage-et-mouture"
+            link: "/activite/broyage-mouture"
           }
         ]}
       />
@@ -210,7 +212,7 @@ const Home = () => {
             title: "Cosmétique",
             description: "Équipements pour la production et le conditionnement de produits cosmétiques, assurant une conformité rigoureuse aux standards de qualité et de sécurité."
           }
-        ]}      />
+        ]} />
 
       {/* Project Showcase Section */}      
       <ProjectShowcase
@@ -230,14 +232,29 @@ const Home = () => {
             id: 3,
             name: "Ils nous ont fait confiance : DRA de Fès - Meknès",
             video: "https://www.youtube.com/embed/9Hw0WgkBn08?si=aANGVo-qW2_CepGX"
+          },
+          {
+            id: 4,
+            name: "Livraison de 6 Broyeurs Déchiqueteurs pour l'Administration des Douanes du Maroc",
+            video: "https://www.youtube.com/embed/C8Vz7RdYBl8?si=sY8vdYC3MHUe-Hc5"
+          },
+          {
+            id: 5,
+            name: "Ils nous ont fait confiance : OFPPT BNI MELLAL",
+            video: "https://www.youtube.com/embed/XtADM_GDltM?si=QqteQiw2aeRuRPJC"
+          },
+          {
+            id: 6,
+            name: "Ils nous ont fait confiance : OFPPT MEKNES",
+            video: "https://www.youtube.com/embed/HaiBmbSNWaE?si=vz3poW0Qw7jfmN_H"
           }
         ]}
-      />      
+      />
       {/* Best Sellers Section */}
-      <BestSellers 
+      <BestSellers
         title="Nos Meilleures Ventes"
         products={bestSellingProducts}
-      />      
+      />
       {/* Stats Section */}
       <Stats />
 
