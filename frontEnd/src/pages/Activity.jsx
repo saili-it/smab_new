@@ -26,7 +26,7 @@ import SertissageIcon from '../assets/subactivites_icons/Sertissage et Bouchage.
 import DistillationIcon from '../assets/subactivites_icons/Distillation.png';
 import ExtractionIcon from '../assets/subactivites_icons/Extraction des huiles.png';
 import SechageIcon from '../assets/subactivites_icons/Sechage.png';
-import TorrefactionIcon from '../assets/subactivites_icons/torrefaction.png';
+import TorrefactionIcon from '../assets/subactivites_icons/Torrefaction.png';
 
 // Hero images mapping
 const heroImages = {
@@ -52,8 +52,8 @@ const subcategoryIcons = {
   'Sertissage et Bouchage': SertissageIcon,
   'Distillation': DistillationIcon,
   'Extraction des Huiles': ExtractionIcon,
-  'Sechage': SechageIcon,
-  'Torrefaction': TorrefactionIcon
+  'Séchage': SechageIcon,
+  'Torréfaction': TorrefactionIcon // Use the correct key with accent
 };
 
 const Activity = () => {

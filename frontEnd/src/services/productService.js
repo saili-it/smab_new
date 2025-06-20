@@ -44,7 +44,8 @@ export const searchProducts = async (query) => {
   try {
     const response = await api.get(`/product`, {
       params: {
-        search: query
+        name: query,
+        mark: 'Machines'
       }
     });
     return response.data;

@@ -169,19 +169,19 @@ const Home = () => {
             title: "NETTOYAGE ET SÉPARATION",
             description: "Technologies avancées de traitement",
             image: nettoyageImg,
-            link: "/activite/nettoyage-et-separation"
+            link: "/activite/nettoyage-separation"
           },
           {
             title: "EXTRACTION DES FRUITS",
             description: "Solutions pour le traitement des fruits",
             image: extractionFruitsImg,
-            link: "/activite/extraction-des-fruits"
+            link: "/activite/extraction-fruits"
           },
           {
             title: "SÉCHAGE ET TORRÉFACTION",
             description: "Équipements de séchage professionnels",
             image: sechageImg,
-            link: "/activite/sechage-et-torrefaction"
+            link: "/activite/sechage-torrefaction"
           },
           {
             title: "BROYAGE ET MOUTURE",
