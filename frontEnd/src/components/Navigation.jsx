@@ -1,79 +1,27 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { FaSearch, FaShoppingCart, FaBars, FaTimes, FaSpinner } from 'react-icons/fa'
+import { FaShoppingCart, FaBars, FaTimes, FaSearch } from 'react-icons/fa'
 import { useAuth } from '../store/AuthContext'
 import { useSelector } from 'react-redux'
 import logo from '../assets/logos/LOGO-SMAB-CROP-1.png'
 import { categories } from '../data/categories'
 import { searchProducts } from '../services/productService'
+import { generateSlug } from '../utils/FunctionHelper'
+
 
 const Navigation = ({ children }) => {
   const { user, logout } = useAuth()
   const cartItems = useSelector(state => state.cart.items)
   const [isOpen, setIsOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [showDropdown, setShowDropdown] = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
   const [showSideNav, setShowSideNav] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const [showDropdown, setShowDropdown] = useState(false)
+  const [searchLoading, setSearchLoading] = useState(false)
+  const searchTimeout = useRef()
   const navigate = useNavigate()
-
-  // Use useCallback to memoize the search function
-  const searchWithDebounce = useCallback(
-    async (query) => {
-      if (!query.trim()) {
-        setSearchResults([]);
-        setShowDropdown(false);
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        const results = await searchProducts(query);
-        setSearchResults(results);
-        setShowDropdown(true);
-      } catch (error) {
-        console.error('Search error:', error);
-        setSearchResults([]);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [] // No dependencies needed
-  );
-
-  // Use useEffect to handle the API call with debounce
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (searchQuery) {
-        searchWithDebounce(searchQuery);
-      }
-    }, 300); // Wait for 300ms after the user stops typing
-
-    return () => clearTimeout(timer);
-  }, [searchQuery, searchWithDebounce]);
-
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
-  const handleProductClick = (product) => {
-    setShowDropdown(false); // Only close the dropdown
-    navigate(`/produit/${product.ProductLabel}?id=${product.ProductId}`);
-  };
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest('.search-container')) {
-        setShowDropdown(false); // Only close the dropdown
-      }
-    }
-
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,62 +40,30 @@ const Navigation = ({ children }) => {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [showSideNav])
-  
-  const SearchInput = () => {
-    const inputRef = React.useRef(null);
-    // Focus the input when clicking anywhere in the search container
-    const handleContainerClick = () => {
-      inputRef.current?.focus();
-    };
 
-    return (
-      <div className="search-container relative w-full max-w-md" onClick={handleContainerClick}>
-        <div className="relative">
-          <input
-            ref={inputRef}
-            type="text"
-            value={searchQuery}
-            onChange={handleSearch}
-            placeholder="Rechercher un produit..."
-            className="w-full pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#e63812] bg-white"
-          />
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-            {isLoading ? (
-              <FaSpinner className="animate-spin text-xl" />
-            ) : (
-              <FaSearch className="text-xl" />
-            )}
-          </div>
-        </div>
-
-        {/* Search Results Dropdown */}
-        {showDropdown && searchResults?.products?.length > 0 && (
-          <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-96 overflow-y-auto">
-            {searchResults.products.map((product) => (
-              <div
-                key={product.ProductId}
-                onClick={() => handleProductClick(product)}
-                className="p-3 hover:bg-gray-100 cursor-pointer flex items-center border-b last:border-b-0"
-              >
-                <div className="w-full">
-                  <div className="font-medium text-gray-800">{product.ProductLabel}</div>
-                  <div className="text-sm text-gray-600">Ref: {product.ProductRef}</div>
-                  <div className="text-sm text-gray-500">Stock: {product.StockQuantity}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* No Results Message */}
-        {showDropdown && searchQuery && !isLoading && (!searchResults?.products || searchResults.products.length === 0) && (
-          <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4">
-            <p className="text-gray-500 text-center">Aucun résultat trouvé</p>
-          </div>
-        )}
-      </div>
-    );
-  }
+  // Debounced search
+  useEffect(() => {
+    if (!searchQuery) {
+      setSearchResults([])
+      setShowDropdown(false)
+      return
+    }
+    setSearchLoading(true)
+    if (searchTimeout.current) clearTimeout(searchTimeout.current)
+    searchTimeout.current = setTimeout(async () => {
+      try {
+        const res = await searchProducts(searchQuery)
+        setSearchResults(res.products || [])
+        setShowDropdown(true)
+      } catch (e) {
+        setSearchResults([])
+        setShowDropdown(false)
+      } finally {
+        setSearchLoading(false)
+      }
+    }, 350)
+    return () => clearTimeout(searchTimeout.current)
+  }, [searchQuery])
 
   return (
     <div className="fixed w-full top-0 z-50">
@@ -199,15 +115,52 @@ const Navigation = ({ children }) => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-20">
             {/* Logo and Search */}
-            <div className="flex items-center gap-6 flex-1">
+            <div className="flex items-center gap-6 flex-1 relative">
               <Link to="/" className="flex-shrink-0">
                 <div className="bg-[#e63812] p-2 rounded">
                   <img src={logo} alt="SMAB Logo" className="h-12 w-auto" />
                 </div>
               </Link>
               {/* Search Bar - Hidden on mobile */}
-              <div className="hidden md:block w-full max-w-xl">
-                <SearchInput />
+              <div className="hidden md:block relative w-80">
+                <div className="flex items-center bg-gray-100 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-[#e63812]">
+                  <FaSearch className="text-gray-400 mr-2" />
+                  <input
+                    type="text"
+                    className="bg-transparent outline-none w-full text-gray-800"
+                    placeholder="Rechercher un produit..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    onFocus={() => searchResults.length > 0 && setShowDropdown(true)}
+                    onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+                  />
+                  {searchLoading && <span className="ml-2 text-xs text-gray-400">...</span>}
+                </div>
+                {showDropdown && searchQuery && (
+                  <div className="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-lg z-50 max-h-80 overflow-y-auto border border-gray-100">
+                    {searchResults.length === 0 && !searchLoading ? (
+                      <div className="p-4 text-gray-500 text-center">Aucun résultat</div>
+                    ) : (
+                      searchResults.map(product => {
+                        const slug = generateSlug(product.ProductLabel || product.name || '')
+                        return (
+                          <div
+                            key={product.ProductId || product.id}
+                            className="block px-4 py-3 hover:bg-gray-50 text-gray-800 border-b last:border-b-0 border-gray-100 cursor-pointer"
+                            onMouseDown={e => {
+                              e.preventDefault();
+                              setShowDropdown(false);
+                              navigate(`/produit/${slug}?id=${product.ProductId}`);
+                            }}
+                          >
+                            <div className="font-medium">{product.ProductLabel || product.name}</div>
+                            <div className="text-xs text-gray-500 truncate">{product.ProductRef ? `Ref: ${product.ProductRef}` : (product.shortDescription || product.ProductDescription)}</div>
+                          </div>
+                        )
+                      })
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -356,9 +309,6 @@ const Navigation = ({ children }) => {
 
               <div className="flex-1 overflow-y-auto hide-scrollbar">
                 {/* Mobile Search */}
-                <div className="p-4 border-b border-gray-100">
-                  <SearchInput />
-                </div>
 
                 {selectedCategory ? (
                   <div className="p-4">
