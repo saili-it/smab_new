@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-// Import partner logos
+// Import all partner logos
 import bimboLogo from '../assets/partners/bimbo.png';
 import cocacolaLogo from '../assets/partners/cocacola.png';
 import enabelLogo from '../assets/partners/enabel.png';
@@ -9,6 +9,13 @@ import gizLogo from '../assets/partners/giz.png';
 import mohamed5Logo from '../assets/partners/mohamed5.png';
 import ocpLogo from '../assets/partners/ocp.png';
 import triaLogo from '../assets/partners/tria.png';
+import agricolSouseLogo from '../assets/partners/agricol souse.png';
+import dgacasaLogo from '../assets/partners/dgacasa.png';
+import draBnimelalLogo from '../assets/partners/dra bnimelal.png';
+import ofpptLogo from '../assets/partners/ofppt.png';
+import ormvahLogo from '../assets/partners/ormvah.png';
+import ormvatrLogo from '../assets/partners/ORMVAT.png';
+import ormvatfLogo from '../assets/partners/ormvatf.png';
 
 const Partners = () => {
   const partners = [
@@ -18,7 +25,14 @@ const Partners = () => {
     { name: 'GIZ', logo: gizLogo },
     { name: 'Université Mohammed V', logo: mohamed5Logo },
     { name: 'OCP', logo: ocpLogo },
-    { name: 'Tria', logo: triaLogo }
+    { name: 'Tria', logo: triaLogo },
+    { name: 'Agricol Souse', logo: agricolSouseLogo },
+    { name: 'DGACASA', logo: dgacasaLogo },
+    { name: 'DRA Bni Melal', logo: draBnimelalLogo },
+    { name: 'OFPPT', logo: ofpptLogo },
+    { name: 'ORMVAH', logo: ormvahLogo },
+    { name: 'ORMVAT', logo: ormvatrLogo },
+    { name: 'ORMVATF', logo: ormvatfLogo },
   ];
 
   return (
@@ -71,7 +85,7 @@ const Partners = () => {
             >
               <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#e63812]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative h-24 flex items-center justify-center">
+                <div className="relative h-32 flex items-center justify-center">
                   <motion.img
                     src={partner.logo}
                     alt={partner.name}

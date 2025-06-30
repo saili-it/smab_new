@@ -12,9 +12,10 @@ const Footer = () => {
       {/* Top Bar with Logo and Slogan */}
       <div className="bg-gradient-to-r from-[#e63812] to-[#ff6b4a] py-6">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">            <div className="flex items-center gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
               <div className="bg-[#e63812] bg-opacity-20 backdrop-blur-sm p-2 rounded-lg shadow-lg">
-                <img src={logo} alt="SMAB Logo" className="h-12 w-auto" />
+                <img src={logo} alt="SMAB Logo" className="w-[262px] max-w-full h-12 md:w-auto" />
               </div>
               <span className="text-white text-xl md:text-2xl font-bold tracking-wide">
                 Des Solutions Avancées Pour Une Production Optimisée.
@@ -98,7 +99,7 @@ const Footer = () => {
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <FaEnvelope className="text-[#e63812]" />
-                  <span>contact@smab.com</span>
+                  <span>contact@smab-co.com</span>
                 </div>
               </div>
 

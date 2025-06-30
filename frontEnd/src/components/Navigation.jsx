@@ -69,75 +69,85 @@ const Navigation = ({ children }) => {
     <div className="fixed w-full top-0 z-50">
       {/* Top Bar */}
       <div className="bg-gradient-to-r from-[#e63812] to-[#ff6b4a] text-white py-2">
-        <div className="container mx-auto px-4">          
-        <div className="flex justify-between items-center text-sm">
-          <div className="flex items-center space-x-4">
-            <a href="tel:+1234567890" className="hover:text-gray-200">+212 766-074939</a>
-            <span>|</span>
-            <a href="mailto:contact@smab.com" className="hover:text-gray-200">contact@smab.com</a>
-          </div>
-          {/* Auth Links */}
-          <div className="flex items-center gap-3 mt-1 sm:mt-0">
-            {user ? (
-              <>
-                <Link to="/dashboard" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
-                  <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.635 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
-                  MY SMAB
-                </Link>
-                <span className="h-4 border-l border-white/40 mx-2"></span>
-                {children} {/* NotificationMenu will render here */}
-                <span className="h-4 border-l border-white/40 mx-2"></span>
-                <button onClick={logout} className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
-                  <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1' /></svg>
-                  Déconnexion
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
-                  <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.635 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>
-                  Connexion
-                </Link>
-                <span className="h-4 border-l border-white/40 mx-2"></span>
-                <Link to="/register" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
-                  <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' /></svg>
-                  Inscription
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
+        <div className="container mx-auto px-4">
+<div className="flex justify-between items-start sm:items-center flex-wrap text-sm w-full">
+  {/* Left: Contact Info */}
+  <div className="flex flex-col items-start gap-1">
+    <a href="tel:+212766074939" className="hover:text-gray-200">+212 766-074939</a>
+    <a href="mailto:contact@smab-co.com" className="hover:text-gray-200">contact@smab-co.com</a>
+  </div>
+
+  {/* Right: Auth Links */}
+  <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-3 mt-2 sm:mt-0 text-right">
+    {user ? (
+      <>
+        <Link to="/dashboard" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
+          <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.635 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
+          </svg>
+          MY SMAB
+        </Link>
+        <span className="hidden sm:inline h-4 border-l border-white/40 mx-2"></span>
+        {children}
+        <span className="hidden sm:inline h-4 border-l border-white/40 mx-2"></span>
+        <button onClick={logout} className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
+          <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1' />
+          </svg>
+          Déconnexion
+        </button>
+      </>
+    ) : (
+      <>
+        <Link to="/login" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
+          <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.635 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
+          </svg>
+          Connexion
+        </Link>
+        <span className="hidden sm:inline h-4 border-l border-white/40 mx-2"></span>
+        <Link to="/register" className="hover:text-gray-200 transition-colors font-medium flex items-center gap-1">
+          <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
+          </svg>
+          Inscription
+        </Link>
+      </>
+    )}
+  </div>
+</div>
+
         </div>
       </div>
 
       {/* Main Navigation */}
       <nav className={`bg-white transition-all duration-300 ${hasScrolled ? 'shadow-lg' : ''}`}>
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-20 border-b border-gray-100 bg-white/90 rounded-b-2xl shadow-sm">
             {/* Logo and Search */}
             <div className="flex items-center gap-6 flex-1 relative">
-              <Link to="/" className="flex-shrink-0">
-                <div className="bg-[#e63812] p-2 rounded">
+              <Link to="/" className="flex-shrink-0 group">
+                <div className="bg-[#e63812] p-2 rounded-lg shadow-md group-hover:scale-105 transition-transform">
                   <img src={logo} alt="SMAB Logo" className="h-12 w-auto" />
                 </div>
               </Link>
               {/* Search Bar - Hidden on mobile */}
               <div className="hidden md:block relative w-80">
-                <div className="flex items-center bg-gray-100 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-[#e63812]">
+                <div className="flex items-center bg-gray-100 rounded-xl px-3 py-2 shadow focus-within:ring-2 focus-within:ring-[#e63812] transition-all">
                   <FaSearch className="text-gray-400 mr-2" />
                   <input
                     type="text"
-                    className="bg-transparent outline-none w-full text-gray-800"
+                    className="bg-transparent outline-none w-full text-gray-800 placeholder-gray-400"
                     placeholder="Rechercher un produit..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
                     onFocus={() => searchResults.length > 0 && setShowDropdown(true)}
                     onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
                   />
-                  {searchLoading && <span className="ml-2 text-xs text-gray-400">...</span>}
+                  {searchLoading && <span className="ml-2 text-xs text-gray-400 animate-pulse">...</span>}
                 </div>
                 {showDropdown && searchQuery && (
-                  <div className="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-lg z-50 max-h-80 overflow-y-auto border border-gray-100">
+                  <div className="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto border border-gray-100">
                     {searchResults.length === 0 && !searchLoading ? (
                       <div className="p-4 text-gray-500 text-center">Aucun résultat</div>
                     ) : (
@@ -146,7 +156,7 @@ const Navigation = ({ children }) => {
                         return (
                           <div
                             key={product.ProductId || product.id}
-                            className="block px-4 py-3 hover:bg-gray-50 text-gray-800 border-b last:border-b-0 border-gray-100 cursor-pointer"
+                            className="block px-4 py-3 hover:bg-gray-50 text-gray-800 border-b last:border-b-0 border-gray-100 cursor-pointer transition-colors"
                             onMouseDown={e => {
                               e.preventDefault();
                               setShowDropdown(false);
@@ -165,33 +175,30 @@ const Navigation = ({ children }) => {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">              <button
-              className="nav-trigger flex items-center text-gray-700 hover:text-[#e63812] font-medium transition-colors"
-              onClick={() => setShowSideNav(!showSideNav)}
-            >
-              <FaBars className="mr-2" />
-              Toutes les catégories
-            </button>
-              <Link to="/services" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
+            <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
+              <button
+                className="nav-trigger flex items-center text-gray-700 hover:text-[#e63812] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#e63812]"
+                onClick={() => setShowSideNav(!showSideNav)}
+              >
+                <FaBars className="mr-2" />
+                Toutes les catégories
+              </button>
+              <Link to="/services" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50">
                 Nos services
               </Link>
-              <Link to="/conseils" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
+              <Link to="/conseils" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50">
                 Nos conseils
               </Link>
-
-              <Link to="/about" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
+              <Link to="/about" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50">
                 À propos
               </Link>
-
-              <Link to="/contact" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors">
+              <Link to="/contact" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50">
                 Contact
               </Link>
-
-
               {/* Cart Icon */}
-              <Link to="/cart" className="relative">
-                <FaShoppingCart className="text-2xl text-gray-700 hover:text-[#e63812] transition-colors" />
-                <span className="absolute -top-2 -right-2 bg-[#e63812] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              <Link to="/cart" className="relative group">
+                <FaShoppingCart className="text-2xl text-gray-700 group-hover:text-[#e63812] transition-colors" />
+                <span className="absolute -top-2 -right-2 bg-[#e63812] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shadow-lg border-2 border-white font-bold">
                   {cartItems.length}
                 </span>
               </Link>

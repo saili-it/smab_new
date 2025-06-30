@@ -31,7 +31,7 @@ const BestSellers = ({ title, products,category }) => {
         </div>
       </section>
     );
-  }
+  } 
 
   // Ensure we only display 4 products
   const displayProducts = products.slice(0, 4);

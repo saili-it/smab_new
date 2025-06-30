@@ -54,6 +54,10 @@ const Contact = () => {
     window.open(`https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`, '_blank');
   };
 
+  const handleEmailClick = () => {
+    window.location.href = 'mailto:contact@smab-co.com';
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -126,7 +130,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
-                    <p className="text-gray-600">contact@smab-co.com</p>
+                    <p className="text-gray-600 cursor-pointer hover:text-[#e63812]" onClick={handleEmailClick}>
+                      contact@smab-co.com
+                    </p>
                   </div>
                 </div>
               </div>

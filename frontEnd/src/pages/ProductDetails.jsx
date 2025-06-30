@@ -18,6 +18,8 @@ const ProductDetails = () => {
   const [error, setError] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   
+  const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
+
   // Separate images and PDFs
   const getFilteredMedia = (files) => {
     if (!files) return { images: [], pdfs: [] };
@@ -367,7 +369,7 @@ const ProductDetails = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Request Technical Sheet via WhatsApp */}
                     <a
-                      href={`https://wa.me/212766074939?text=Bonjour, je souhaite recevoir la fiche technique du produit: ${product.ProductLabel} (Réf: ${product.ProductRef})`}
+                      href={`https://wa.me/212766074939?text=Bonjour, je souhaite recevoir la fiche technique du produit: ${product.ProductLabel} (Réf: ${product.ProductRef})%0ALien: ${pageUrl}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center w-full bg-green-600 text-white px-6 py-4 rounded-xl font-semibold hover:bg-green-500 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
@@ -381,7 +383,7 @@ const ProductDetails = () => {
 
                     {/* Request Quote via WhatsApp */}
                     <a
-                      href={`https://wa.me/212766074939?text=Bonjour, je souhaite avoir un devis pour le produit: ${product.ProductLabel} (Réf: ${product.ProductRef})`}
+                      href={`https://wa.me/212766074939?text=Bonjour, je souhaite avoir un devis pour le produit: ${product.ProductLabel} (Réf: ${product.ProductRef})%0ALien: ${pageUrl}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center w-full bg-green-600 text-white px-6 py-4 rounded-xl font-semibold hover:bg-green-500 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"

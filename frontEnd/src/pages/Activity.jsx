@@ -10,11 +10,11 @@ import { categories } from '../data/categories';
 import ExtractionHuileHero from '../assets/heros/activite/EXTRACTION-DISTILLATION-DES-HUILES-HERO.png';
 import PackagingHero from '../assets/heros/activite/PACKAGING-HERO.png';
 import SechageHero from '../assets/heros/activite/SECHACE-ET-TORREFACTION-HERO.png';
+import BroyageEMouture from '../assets/heros/activite/broyage et mouture.jpg';
+import NettoyageEtSeparation from '../assets/heros/activite/nettoyage et separation.jpg';
 
 // Import coming soon images
-import BroyageCommingSoon from '../assets/comming_soon/Broyage et mouture.png';
 import ExtractionFruitsCommingSoon from '../assets/comming_soon/Extraction des Fruits.png';
-import NettoyageCommingSoon from '../assets/comming_soon/Nettoyage et Séparation.png';
 
 // Import subcategory icons
 import EnsachageIcon from '../assets/subactivites_icons/Ensachage.png';
@@ -33,13 +33,13 @@ const heroImages = {
   'extraction-distillation': ExtractionHuileHero,
   'packaging': PackagingHero,
   'sechage-torrefaction': SechageHero,
-  'broyage-mouture': BroyageCommingSoon,
+  'broyage-mouture': BroyageEMouture,
   'extraction-fruits': ExtractionFruitsCommingSoon,
-  'nettoyage-separation': NettoyageCommingSoon
+  'nettoyage-separation': NettoyageEtSeparation
 };
 
 // Categories that are coming soon
-const comingSoonCategories = [ 'extraction-fruits', 'nettoyage-separation'];
+const comingSoonCategories = [ 'extraction-fruits'];
 
 
 // Subcategory icons mapping

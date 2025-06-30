@@ -50,7 +50,7 @@ const IndustrySlider = ({ title, subtitle, slides }) => {
           }}
           loop={true}
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-          className="industry-slider !overflow-visible !pt-10 !pb-20"
+          className="industry-slider !overflow-visible !pt-10 !pb-20 custom-swiper-nav"
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index} className="!w-[900px] max-w-[90vw]">
@@ -98,6 +98,39 @@ const IndustrySlider = ({ title, subtitle, slides }) => {
           ))}
         </Swiper>
       </div>
+      {/* Custom Swiper navigation styles to move buttons outside the slider */}
+      <style>{`
+        .custom-swiper-nav .swiper-button-next,
+        .custom-swiper-nav .swiper-button-prev {
+          top: 50%;
+          transform: translateY(-50%);
+          width: 48px;
+          height: 48px;
+          background: rgba(230,56,18,0.9);
+          color: #fff;
+          border-radius: 50%;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+          z-index: 20;
+        }
+        .custom-swiper-nav .swiper-button-next {
+          right: -32px;
+        }
+        .custom-swiper-nav .swiper-button-prev {
+          left: -32px;
+        }
+        .custom-swiper-nav .swiper-button-next:after,
+        .custom-swiper-nav .swiper-button-prev:after {
+          font-size: 20px;
+        }
+        @media (max-width: 900px) {
+          .custom-swiper-nav .swiper-button-next {
+            right: 0;
+          }
+          .custom-swiper-nav .swiper-button-prev {
+            left: 0;
+          }
+        }
+      `}</style>
     </section>
   );
 };
