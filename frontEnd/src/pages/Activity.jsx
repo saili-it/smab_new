@@ -12,6 +12,7 @@ import PackagingHero from '../assets/heros/activite/PACKAGING-HERO.png';
 import SechageHero from '../assets/heros/activite/SECHACE-ET-TORREFACTION-HERO.png';
 import BroyageEMouture from '../assets/heros/activite/broyage et mouture.jpg';
 import NettoyageEtSeparation from '../assets/heros/activite/nettoyage et separation.jpg';
+import ExtractionFruits from '../assets/heros/activite/Extraction des Fruits.png';
 
 // Import coming soon images
 import ExtractionFruitsCommingSoon from '../assets/comming_soon/Extraction des Fruits.png';
@@ -27,6 +28,8 @@ import DistillationIcon from '../assets/subactivites_icons/Distillation.png';
 import ExtractionIcon from '../assets/subactivites_icons/Extraction des huiles.png';
 import SechageIcon from '../assets/subactivites_icons/Sechage.png';
 import TorrefactionIcon from '../assets/subactivites_icons/Torrefaction.png';
+import Broyage from '../assets/subactivites_icons/Broyage.jpg';
+import Mouture from '../assets/subactivites_icons/Mouture.jpg';
 
 // Hero images mapping
 const heroImages = {
@@ -34,12 +37,12 @@ const heroImages = {
   'packaging': PackagingHero,
   'sechage-torrefaction': SechageHero,
   'broyage-mouture': BroyageEMouture,
-  'extraction-fruits': ExtractionFruitsCommingSoon,
+  'extraction-fruits': ExtractionFruits,
   'nettoyage-separation': NettoyageEtSeparation
 };
 
 // Categories that are coming soon
-const comingSoonCategories = [ 'extraction-fruits'];
+const comingSoonCategories = [''];
 
 
 // Subcategory icons mapping
@@ -53,7 +56,9 @@ const subcategoryIcons = {
   'Distillation': DistillationIcon,
   'Extraction des Huiles': ExtractionIcon,
   'Séchage': SechageIcon,
-  'Torréfaction': TorrefactionIcon // Use the correct key with accent
+  'Torréfaction': TorrefactionIcon,
+  'Broyage' : Broyage,
+  'Mouture' : Mouture
 };
 
 const Activity = () => {
@@ -115,6 +120,7 @@ const Activity = () => {
   // Get the title to display (subcategory or main category)
   const displayTitle = subcategory ? formatCategoryName(subcategory) : formatCategoryName(category);
 
+  console.log(currentCategory)
   return (
     <div className="min-h-screen">
       {/* Hero Header */}

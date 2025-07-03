@@ -57,7 +57,7 @@ export const categories = [
     slug: 'broyage-mouture',
     subcategories: [
       { id: 101, name: 'Mouture', slug: 'Mouture' },
-      { id: 102, name: 'broyage', slug: 'broyage' }
+      { id: 102, name: 'Broyage', slug: 'broyage' }
     ]
   },
   {
