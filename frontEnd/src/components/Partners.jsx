@@ -1,40 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-// Import all partner logos
-import bimboLogo from '../assets/partners/bimbo.png';
-import cocacolaLogo from '../assets/partners/cocacola.png';
-import enabelLogo from '../assets/partners/enabel.png';
-import gizLogo from '../assets/partners/giz.png';
-import mohamed5Logo from '../assets/partners/mohamed5.png';
-import ocpLogo from '../assets/partners/ocp.png';
-import triaLogo from '../assets/partners/tria.png';
-import agricolSouseLogo from '../assets/partners/agricol souse.png';
-import dgacasaLogo from '../assets/partners/dgacasa.png';
-import draBnimelalLogo from '../assets/partners/dra bnimelal.png';
-import ofpptLogo from '../assets/partners/ofppt.png';
-import ormvahLogo from '../assets/partners/ormvah.png';
-import ormvatrLogo from '../assets/partners/ORMVAT.png';
-import ormvatfLogo from '../assets/partners/ormvatf.png';
 
-const Partners = () => {
-  const partners = [
-    { name: 'Bimbo', logo: bimboLogo },
-    { name: 'Coca Cola', logo: cocacolaLogo },
-    { name: 'Enabel', logo: enabelLogo },
-    { name: 'GIZ', logo: gizLogo },
-    { name: 'Université Mohammed V', logo: mohamed5Logo },
-    { name: 'OCP', logo: ocpLogo },
-    { name: 'Tria', logo: triaLogo },
-    { name: 'Agricol Souse', logo: agricolSouseLogo },
-    { name: 'DGACASA', logo: dgacasaLogo },
-    { name: 'DRA Bni Melal', logo: draBnimelalLogo },
-    { name: 'OFPPT', logo: ofpptLogo },
-    { name: 'ORMVAH', logo: ormvahLogo },
-    { name: 'ORMVAT', logo: ormvatrLogo },
-    { name: 'ORMVATF', logo: ormvatfLogo },
-  ];
 
+const Partners = ({ images = [], title = 'Nos Partenaires', text = 'Des entreprises leaders qui nous font confiance pour leurs solutions industrielles' }) => {
   return (
     <section className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
       {/* Background Elements */}
@@ -62,17 +31,17 @@ const Partners = () => {
             Ils Nous Font Confiance
           </motion.span>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-            Nos Partenaires
+            {title}
           </h2>
           <p className="text-gray-600 text-lg leading-relaxed">
-            Des entreprises leaders qui nous font confiance pour leurs solutions industrielles
+            {text}
           </p>
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-          {partners.map((partner, index) => (
+          {images.map((img, index) => (
             <motion.div
-              key={partner.name}
+              key={img || index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -87,8 +56,8 @@ const Partners = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-[#e63812]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative h-32 flex items-center justify-center">
                   <motion.img
-                    src={partner.logo}
-                    alt={partner.name}
+                    src={img}
+                    alt={title}
                     className="max-h-full max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2 }}

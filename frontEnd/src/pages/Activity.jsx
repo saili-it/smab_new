@@ -54,7 +54,7 @@ const subcategoryIcons = {
   'Scellage': ScellageIcon,
   'Sertissage et Bouchage': SertissageIcon,
   'Distillation': DistillationIcon,
-  'Extraction des Huiles': ExtractionIcon,
+  'Extraction': ExtractionIcon,
   'Séchage': SechageIcon,
   'Torréfaction': TorrefactionIcon,
   'Broyage' : Broyage,

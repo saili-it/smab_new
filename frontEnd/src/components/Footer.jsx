@@ -91,7 +91,7 @@ const Footer = () => {
               <div className="mb-6 space-y-3">
                 <div className="flex items-center gap-3 text-gray-300">
                   <FaPhone className="text-[#e63812]" />
-                  <span>+212 766-074939</span>
+                  <a href="https://wa.me/212766074939" target="_blank" rel="noopener noreferrer" className="hover:underline">+212 766-074939</a>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <FaClock className="text-[#e63812]" />
@@ -99,7 +99,7 @@ const Footer = () => {
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <FaEnvelope className="text-[#e63812]" />
-                  <span>contact@smab-co.com</span>
+                  <a href="mailto:contact@smab-co.com" className="hover:underline">contact@smab-co.com</a>
                 </div>
               </div>
 
@@ -125,16 +125,16 @@ const Footer = () => {
               <div className="mb-6">
                 <h4 className="text-lg font-semibold mb-4">Trouvez-nous sur</h4>
                 <div className="flex gap-4">
-                  <a href="#" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
+                  <a href="https://web.facebook.com/SMABMAROC/?locale=fr_FR&_rdc=1&_rdr" rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
                     <FaFacebookF size={20} />
                   </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
+                  <a href="#" rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
                     <FaTiktok size={20} />
                   </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
+                  <a href="https://www.instagram.com/smabmaroc/" rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
                     <FaInstagram size={20} />
                   </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
+                  <a href="https://www.youtube.com/@SMABMAROC/about" rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
                     <FaYoutube size={20} />
                   </a>
                 </div>

@@ -48,7 +48,7 @@ const StatCounter = ({ end, duration, label }) => {
   );
 };
 
-const Stats = () => {
+const Stats = ({ projetsRealises = 800, partenaires = 200, ansExpertise = 25 }) => {
   return (
     <section className="relative py-20 bg-black">
       {/* Background overlay with gradient */}
@@ -56,9 +56,9 @@ const Stats = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
-          <StatCounter end={800} duration={2.5} label="Projets Réalisés" />
-          <StatCounter end={200} duration={2} label="Partenaires" />
-          <StatCounter end={25} duration={1.5} label="Ans D'expertise" />
+          <StatCounter end={projetsRealises} duration={2.5} label="Projets Réalisés" />
+          <StatCounter end={partenaires} duration={2} label="Partenaires" />
+          <StatCounter end={ansExpertise} duration={1.5} label="Ans D'expertise" />
         </div>
       </div>
     </section>

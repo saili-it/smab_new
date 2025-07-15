@@ -1,4 +1,7 @@
 import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { setContent, setContentLoading, setContentError } from '../store/contentSlice'
+import { getWebsiteContent } from '../services/contentService'
 import { Outlet, useLocation } from 'react-router-dom'
 import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
@@ -6,6 +9,21 @@ import NotificationMenu from '../components/NotificationMenu'
 
 const RootLayout = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
+
+
+  // Fetch website content on first mount
+  useEffect(() => {
+    dispatch(setContentLoading());
+    getWebsiteContent()
+      .then((data) => {
+        dispatch(setContent(data));
+      })
+      .catch((err) => {
+        dispatch(setContentError(err.message || 'Erreur de chargement du contenu'));
+      });
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);

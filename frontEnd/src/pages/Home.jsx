@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaTruck, FaLock, FaHeadset, FaRegCreditCard } from 'react-icons/fa';
 import Hero from '../components/Hero';
@@ -34,6 +35,10 @@ const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [bestSellingProducts, setBestSellingProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Get website content from Redux store
+  const contentWebSite = useSelector(state => state.content.data);
+  console.log(contentWebSite)
 
   // Fetch products from multiple categories and get random 4
   useEffect(() => {
@@ -72,21 +77,30 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  const heroContent = {
-    videoUrl: "https://res.cloudinary.com/dzcd9eizd/video/upload/v1740649881/vdbaner_t3vuiv.mp4",
-    title: "Des Solutions Avancées Pour L'Industrie Agro-Food, Pharmaceutique, Cosmétique Et Chimique",
-    subtitle: "SMAB - Votre Partenaire en Équipements Industriels de Qualité"
-  };
+
+  // Get hero data from contentWebSite if available
+  const heroData = contentWebSite?.smabHomePage?.hero;
+
+  // Build video or image URL using VITE_API_CONTENT
+  let heroMediaUrl = '';
+  if (heroData && heroData.bannier) {
+    heroMediaUrl = `${import.meta.env.VITE_API_CONTENT}/media/${heroData.bannier}`;
+  }
+
+
 
   return (
     <div className="min-h-screen">
       <Hero
-        videoUrl={heroContent.videoUrl}
-        title={heroContent.title}
-        subtitle={heroContent.subtitle}
+        videoUrl={heroData?.isVideo ? heroMediaUrl : undefined}
+        imageUrl={!heroData?.isVideo ? heroMediaUrl : undefined}
+        title={heroData?.title || ''}
+        subtitle={heroData?.text || ''}
         overlay={true}
         showLogo={true}
-        showButton={true}
+        showButton={!!heroData?.ctaText}
+        ctaText={heroData?.ctaText}
+        ctaLink={heroData?.ctaLink}
       />
 
       {/* USP Section */}
@@ -194,61 +208,31 @@ const Home = () => {
 
       {/* Industry Section */}
       <IndustrySlider
-        title="DÉCOUVREZ SMAB"
-        subtitle="Votre expert en solutions industrielles pour tous vos besoins en transformation et fin de ligne dans divers secteurs."
-        slides={[
-          {
-            image: agroFoodImg,
-            title: "Agro-food",
-            description: "Solutions complètes pour l'optimisation et la transformation des produits destinés à l'alimentation humaine et animale, visant à améliorer l'efficacité et la qualité de vos opérations."
-          },
-          {
-            image: pharmaceutiqueImg,
-            title: "Pharmaceutique",
-            description: "Technologies avancées pour le conditionnement et la manipulation des produits pharmaceutiques, garantissant des normes de sécurité et de précision élevées."
-          },
-          {
-            image: cosmetiqueImg,
-            title: "Cosmétique",
-            description: "Équipements pour la production et le conditionnement de produits cosmétiques, assurant une conformité rigoureuse aux standards de qualité et de sécurité."
-          }
-        ]} />
+        title={contentWebSite?.smabHomePage?.decouvrez?.title || "DÉCOUVREZ SMAB"}
+        subtitle={contentWebSite?.smabHomePage?.decouvrez?.text || "Votre expert en solutions industrielles pour tous vos besoins en transformation et fin de ligne dans divers secteurs."}
+        slides={
+          Array.isArray(contentWebSite?.smabHomePage?.decouvrez?.swiper)
+            ? contentWebSite.smabHomePage.decouvrez.swiper.map(item => ({
+                image: item.image ? `${import.meta.env.VITE_API_CONTENT}/media/${item.image}` : '',
+                title: item.title,
+                description: item.desc
+              }))
+            : []
+        }
+      />
 
       {/* Project Showcase Section */}      
       <ProjectShowcase
         title="Nos projets et réalisations"
-        projects={[
-          {
-            id: 1,
-            name: "Ils nous ont fait confiance : Bimbo",
-            video: "https://www.youtube.com/embed/rHN63sxe61I?si=jIpI3wQqcq7ppL7G"
-          },
-          {
-            id: 2,
-            name: "Ils nous ont fait confiance : OFPPT",
-            video: "https://www.youtube.com/embed/pfpbR4yBXfU?si=GfQqg9QZoZu5fcN0"
-          },
-          {
-            id: 3,
-            name: "Ils nous ont fait confiance : DRA de Fès - Meknès",
-            video: "https://www.youtube.com/embed/9Hw0WgkBn08?si=aANGVo-qW2_CepGX"
-          },
-          {
-            id: 4,
-            name: "Livraison de 6 Broyeurs Déchiqueteurs pour l'Administration des Douanes du Maroc",
-            video: "https://www.youtube.com/embed/C8Vz7RdYBl8?si=sY8vdYC3MHUe-Hc5"
-          },
-          {
-            id: 5,
-            name: "Ils nous ont fait confiance : OFPPT BNI MELLAL",
-            video: "https://www.youtube.com/embed/XtADM_GDltM?si=QqteQiw2aeRuRPJC"
-          },
-          {
-            id: 6,
-            name: "Ils nous ont fait confiance : OFPPT MEKNES",
-            video: "https://www.youtube.com/embed/HaiBmbSNWaE?si=vz3poW0Qw7jfmN_H"
-          }
-        ]}
+        projects={
+          Array.isArray(contentWebSite?.smabHomePage?.projets)
+            ? contentWebSite.smabHomePage.projets.map((item, idx) => ({
+                id: item._id || idx,
+                name: item.title,
+                video: item.videoUrl
+              }))
+            : []
+        }
       />
       {/* Best Sellers Section */}
       <BestSellers
@@ -256,10 +240,20 @@ const Home = () => {
         products={bestSellingProducts}
       />
       {/* Stats Section */}
-      <Stats />
+      <Stats
+        projetsRealises={contentWebSite?.smabHomePage?.counter?.projetsRealises}
+        partenaires={contentWebSite?.smabHomePage?.counter?.partenaires}
+        ansExpertise={contentWebSite?.smabHomePage?.counter?.ansExpertise}
+      />
 
       {/* Partners Section */}
-      <Partners />
+      <Partners
+        images={Array.isArray(contentWebSite?.smabHomePage?.partenaires?.images)
+          ? contentWebSite.smabHomePage.partenaires.images.map(img => `${import.meta.env.VITE_API_CONTENT}/media/${img}`)
+          : []}
+        title={contentWebSite?.smabHomePage?.partenaires?.title}
+        text={contentWebSite?.smabHomePage?.partenaires?.text}
+      />
 
     </div>
   )

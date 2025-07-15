@@ -79,7 +79,7 @@ export const categories = [
     slug: 'extraction-distillation',
     subcategories: [
       { id: 401, name: 'Distillation', slug: 'Distillation' },
-      { id: 402, name: 'Extraction des Huiles', slug: 'Extraction-des-Huiles' }
+      { id: 402, name: 'Extraction', slug: 'Extraction' }
     ]
   }
 ];

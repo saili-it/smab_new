@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
 import logo from '../assets/logos/LOGO-SMAB-CROP-1.png'; 
 
-const Hero = ({ videoUrl, imageUrl, title, subtitle, overlay = true, showLogo = false, showButton = false }) => {
+const Hero = ({ videoUrl, imageUrl, title, subtitle, overlay = true, showLogo = false, showButton = false, ctaText = 'Contactez-nous', ctaLink = '/contact' }) => {
   return (
     <div className="relative h-screen w-full overflow-hidden">
       {videoUrl ? (
@@ -49,10 +49,10 @@ const Hero = ({ videoUrl, imageUrl, title, subtitle, overlay = true, showLogo = 
           
           {showButton && (
             <Link
-              to="/contact"
+              to={ctaLink.startsWith('/') ? ctaLink : `/${ctaLink}`}
               className="inline-flex items-center gap-2 bg-[#e63812] text-white px-8 py-3 rounded-lg hover:bg-[#ff6b4a] transition-colors font-semibold mt-6"
             >
-              Contactez-nous
+              {ctaText}
               <FaArrowRight />
             </Link>
           )}
