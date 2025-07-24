@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import logo from '../assets/logos/LOGO-SMAB-CROP-1.png'
 import logo_cmi from '../assets/logo_cmi.png'
@@ -7,6 +8,14 @@ import logo_visa from '../assets/logo_visa.png'
 import { FaFacebookF, FaInstagram, FaTiktok, FaYoutube, FaEnvelope, FaPhone, FaClock } from 'react-icons/fa'
 
 const Footer = () => {
+  const contentWebSite = useSelector(state => state.content.data);
+  const contactInfo = contentWebSite?.smabContactPage || {};
+  const phoneNumber = contactInfo.tel ? `+${contactInfo.tel}` : '+212 766-074939';
+  const emailAddress = contactInfo.email || 'contact@smab-co.com';
+  const fbLink = contactInfo.fb || 'https://web.facebook.com/SMABMAROC/?locale=fr_FR&_rdc=1&_rdr';
+  const instaLink = contactInfo.insta || 'https://www.instagram.com/smabmaroc/';
+  const tiktokLink = contactInfo.tiktok || '#';
+  const ytbLink = contactInfo.ytb || 'https://www.youtube.com/@SMABMAROC/about';
   return (
     <footer className="mt-auto bg-gradient-to-b from-gray-900 to-black text-white">
       {/* Top Bar with Logo and Slogan */}
@@ -91,7 +100,7 @@ const Footer = () => {
               <div className="mb-6 space-y-3">
                 <div className="flex items-center gap-3 text-gray-300">
                   <FaPhone className="text-[#e63812]" />
-                  <a href="https://wa.me/212766074939" target="_blank" rel="noopener noreferrer" className="hover:underline">+212 766-074939</a>
+                  <a href={`https://wa.me/${contactInfo.tel || phoneNumber.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{phoneNumber}</a>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <FaClock className="text-[#e63812]" />
@@ -99,7 +108,7 @@ const Footer = () => {
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <FaEnvelope className="text-[#e63812]" />
-                  <a href="mailto:contact@smab-co.com" className="hover:underline">contact@smab-co.com</a>
+                  <a href={`mailto:${emailAddress}`} className="hover:underline">{emailAddress}</a>
                 </div>
               </div>
 
@@ -125,16 +134,16 @@ const Footer = () => {
               <div className="mb-6">
                 <h4 className="text-lg font-semibold mb-4">Trouvez-nous sur</h4>
                 <div className="flex gap-4">
-                  <a href="https://web.facebook.com/SMABMAROC/?locale=fr_FR&_rdc=1&_rdr" rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
+                  <a href={fbLink} rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
                     <FaFacebookF size={20} />
                   </a>
-                  <a href="#" rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
+                  <a href={tiktokLink} rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
                     <FaTiktok size={20} />
                   </a>
-                  <a href="https://www.instagram.com/smabmaroc/" rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
+                  <a href={instaLink} rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
                     <FaInstagram size={20} />
                   </a>
-                  <a href="https://www.youtube.com/@SMABMAROC/about" rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
+                  <a href={ytbLink} rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
                     <FaYoutube size={20} />
                   </a>
                 </div>
@@ -161,7 +170,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

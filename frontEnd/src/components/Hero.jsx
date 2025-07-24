@@ -48,13 +48,25 @@ const Hero = ({ videoUrl, imageUrl, title, subtitle, overlay = true, showLogo = 
           )}
           
           {showButton && (
-            <Link
-              to={ctaLink.startsWith('/') ? ctaLink : `/${ctaLink}`}
-              className="inline-flex items-center gap-2 bg-[#e63812] text-white px-8 py-3 rounded-lg hover:bg-[#ff6b4a] transition-colors font-semibold mt-6"
-            >
-              {ctaText}
-              <FaArrowRight />
-            </Link>
+            ctaLink.startsWith('http') ? (
+              <a
+                href={ctaLink}
+                className="inline-flex items-center gap-2 bg-[#e63812] text-white px-8 py-3 rounded-lg hover:bg-[#ff6b4a] transition-colors font-semibold mt-6"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {ctaText}
+                <FaArrowRight />
+              </a>
+            ) : (
+              <Link
+                to={ctaLink.startsWith('/') ? ctaLink : `/${ctaLink}`}
+                className="inline-flex items-center gap-2 bg-[#e63812] text-white px-8 py-3 rounded-lg hover:bg-[#ff6b4a] transition-colors font-semibold mt-6"
+              >
+                {ctaText}
+                <FaArrowRight />
+              </Link>
+            )
           )}
         </div>
       </div>

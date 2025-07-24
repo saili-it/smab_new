@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 import { submitContactForm } from '../services/contactService';
@@ -13,7 +14,11 @@ const Contact = () => {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', content: '' });
-  const phoneNumber = '+212 766-074939';
+  // Get dynamic contact info from Redux store
+  const contentWebSite = useSelector(state => state.content.data);
+  const contactInfo = contentWebSite?.smabContactPage || {};
+  const phoneNumber = contactInfo.tel ? `+${contactInfo.tel}` : '+212 766-074939';
+  const emailAddress = contactInfo.email || 'contact@smab-co.com';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,11 +56,11 @@ const Contact = () => {
   };
 
   const handleWhatsAppClick = () => {
-    window.open(`https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`, '_blank');
+    window.open(`https://wa.me/${contactInfo.tel || phoneNumber.replace(/[^0-9]/g, '')}`, '_blank');
   };
 
   const handleEmailClick = () => {
-    window.location.href = 'mailto:contact@smab-co.com';
+    window.location.href = `mailto:${emailAddress}`;
   };
 
   return (
@@ -131,7 +136,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
                     <p className="text-gray-600 cursor-pointer hover:text-[#e63812]" onClick={handleEmailClick}>
-                      contact@smab-co.com
+                      {emailAddress}
                     </p>
                   </div>
                 </div>

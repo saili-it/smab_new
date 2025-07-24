@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { FaArrowRight, FaTruck, FaLock, FaHeadset, FaRegCreditCard } from 'react-icons/fa';
 import Hero from '../components/Hero';
 import CategorySlider from '../components/CategorySlider';
 import IndustrySlider from '../components/IndustrySlider';
@@ -11,10 +9,6 @@ import BestSellers from '../components/BestSellers';
 import { getProduitsCategory } from '../services/productService';
 import Partners from '../components/Partners';
 
-// Import industry images
-import agroFoodImg from '../assets/industrielle/agroFood.jpg';
-import pharmaceutiqueImg from '../assets/industrielle/pharmaceutique.jpg';
-import cosmetiqueImg from '../assets/industrielle/cosmetique.jpg';
 
 // Import images for categories
 import extractionHuilesImg from '../assets/images/extraction_huiles.jpg';

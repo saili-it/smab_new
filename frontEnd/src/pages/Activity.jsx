@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { getProduitsCategory } from '../services/productService';
 import { motion } from 'framer-motion';
 import ProductCard from '../components/ProductCard';
@@ -57,8 +58,8 @@ const subcategoryIcons = {
   'Extraction': ExtractionIcon,
   'Séchage': SechageIcon,
   'Torréfaction': TorrefactionIcon,
-  'Broyage' : Broyage,
-  'Mouture' : Mouture
+  'Broyage': Broyage,
+  'Mouture': Mouture
 };
 
 const Activity = () => {
@@ -68,11 +69,29 @@ const Activity = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilters, setShowFilters] = useState(false);
 
-  // Get current category data
+  // Get website content from Redux store
+  const contentWebSite = useSelector(state => state.content.data);
+
+  // Get API content base URL from environment variable
+  const apiContentUrl = import.meta.env.VITE_API_CONTENT;
+
+  // Get current category data from categories.js
   const currentCategory = categories.find(cat => cat.slug === category);
-    // Get all related categories (excluding current)
+
+  // Get category content from contentWebSite
+  const currentCategoryContent = contentWebSite?.smabCategoriesPage?.find(
+    cat => cat.name.toLowerCase() === currentCategory.name.toLowerCase()
+  );
+
+
+  // Get all related categories (excluding current)
   const relatedCategories = categories
     .filter(cat => cat.slug !== category);
+
+  // Function to get full image URL
+  const getImageUrl = (imageId) => {
+    return imageId ? `${apiContentUrl}/media/${imageId}` : '';
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -82,11 +101,11 @@ const Activity = () => {
         const result = await getProduitsCategory(currentCategory?.name || '');
         // If there's a subcategory, filter the products accordingly
         const allProducts = result.products || [];
-        const filteredProducts = subcategory 
+        const filteredProducts = subcategory
           ? allProducts.filter(product => {
-              const subCat = currentCategory?.subcategories.find(sub => sub.slug.toLowerCase() === subcategory.toLowerCase());
-              return product.subcategory?.toLowerCase() === subCat?.name.toLowerCase();
-            })
+            const subCat = currentCategory?.subcategories.find(sub => sub.slug.toLowerCase() === subcategory.toLowerCase());
+            return product.subcategory?.toLowerCase() === subCat?.name.toLowerCase();
+          })
           : allProducts;
         setProducts(filteredProducts);
       } catch (error) {
@@ -120,20 +139,19 @@ const Activity = () => {
   // Get the title to display (subcategory or main category)
   const displayTitle = subcategory ? formatCategoryName(subcategory) : formatCategoryName(category);
 
-  console.log(currentCategory)
   return (
     <div className="min-h-screen">
       {/* Hero Header */}
       <header className="relative h-[600px] overflow-hidden">
         <div className="absolute inset-0">
-          <img 
-            src={heroImages[category] || currentCategory?.image} 
+          <img
+            src={currentCategoryContent?.hero?.image ? getImageUrl(currentCategoryContent.hero.image) : ''}
             alt={currentCategory?.name}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
         </div>
-        
+
         <div className="relative h-full container mx-auto px-4 flex flex-col justify-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -150,17 +168,18 @@ const Activity = () => {
               Notre Expertise
             </motion.span>
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-              {currentCategory?.name || ''}
+              {currentCategoryContent?.hero?.title || currentCategory?.name || ''}
             </h1>
             <p className="text-xl text-gray-100 leading-relaxed mb-8 max-w-2xl">
-             {` Découvrez notre gamme complète d'équipements industriels pour ${currentCategory?.name || ''}`}
+              {currentCategoryContent?.hero?.text ||
+                `Découvrez notre gamme complète d'équipements industriels pour ${currentCategory?.name || ''}`}
             </p>
             <div className="flex flex-wrap gap-4">
               <button className="px-8 py-3 bg-[#e63812] text-white rounded-lg hover:bg-[#ff6b4a] transition-colors duration-300 flex items-center gap-2 shadow-lg">
                 Découvrir nos produits
                 <FaArrowRight />
               </button>
-              <Link 
+              <Link
                 to="/contact"
                 className="px-8 py-3 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2 shadow-lg"
               >
@@ -173,14 +192,16 @@ const Activity = () => {
 
         {/* Bottom Gradient */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
-      </header>      {/* Coming Soon Banner */}
+      </header>
+
+      {/* Coming Soon Banner */}
       {comingSoonCategories.includes(category) && (
         <section className="py-24 px-4">
           <div className="container mx-auto">
             <div className="relative overflow-hidden rounded-3xl shadow-xl group">
               <div className="aspect-w-16 aspect-h-7">
-                <img 
-                  src={heroImages[category]} 
+                <img
+                  src={heroImages[category]}
                   alt={currentCategory?.name}
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                 />
@@ -254,14 +275,54 @@ const Activity = () => {
                       id: product.ProductId,
                       name: product.ProductLabel,
                       description: product.shortDescription || product.ProductDescription || 'Description à venir',
-                      image: product.ImageFilenames?.length > 0 
-                        ? `https://www.kelmohub.com/product-images/${product.ProductRef}/${product.ImageFilenames[0]}` 
+                      image: product.ImageFilenames?.length > 0
+                        ? `https://www.kelmohub.com/product-images/${product.ProductRef}/${product.ImageFilenames[0]}`
                         : '',
                       category: category
                     }}
                   />
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Category Advertising Banner */}
+      {currentCategoryContent?.advertisingBanner?.image && (
+        <section className="py-24 px-4">
+          <div className="container mx-auto">
+            <div className="relative overflow-hidden rounded-3xl shadow-xl group">
+              <div className="aspect-w-16 aspect-h-7">
+                <img
+                  src={getImageUrl(currentCategoryContent.advertisingBanner.image)}
+                  alt={currentCategoryContent.advertisingBanner.title}
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent">
+                  <div className="absolute inset-0 flex items-center justify-start px-12">
+                    <div className="max-w-2xl text-white">
+                      <h2 className="text-4xl font-bold mb-4">
+                        {currentCategoryContent.advertisingBanner.title}
+                      </h2>
+                      <p className="text-xl mb-8 text-white/90">
+                        {currentCategoryContent.advertisingBanner.text}
+                      </p>
+                      {currentCategoryContent.advertisingBanner.whatsappLink && (
+                        <a
+                          href={`https://wa.me/${currentCategoryContent.advertisingBanner.whatsappLink}?text=${encodeURIComponent(currentCategoryContent.advertisingBanner.whatsappMsg || '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 bg-white text-[#e63812] px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+                        >
+                          {currentCategoryContent.advertisingBanner.buttonText || 'Contactez-nous'}
+                          <FaArrowRight />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -275,10 +336,10 @@ const Activity = () => {
         <div className="container mx-auto relative">
           <div className="max-w-3xl text-white">
             <h2 className="text-4xl font-bold mb-6">
-              Besoin d'une solution sur mesure ?
+             {` Besoin d'une solution sur mesure ?`}
             </h2>
             <p className="text-xl mb-8 text-white/90">
-              Nos experts sont là pour vous accompagner dans le choix de l'équipement idéal pour votre activité.
+            {`Nos experts sont là pour vous accompagner dans le choix de l'équipement idéal pour votre activité.`}
             </p>
             <Link
               to="/contact"
@@ -305,8 +366,10 @@ const Activity = () => {
                 className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500"
               >
                 <div className="aspect-w-16 aspect-h-9">
-                  <img 
-                    src={cat.image} 
+                  <img
+                    src={contentWebSite?.smabCategoriesPage?.find(c => c.name === cat.name)?.hero?.image
+                      ? getImageUrl(contentWebSite.smabCategoriesPage.find(c => c.name === cat.name).hero.image)
+                      : cat.image}
                     alt={cat.name}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                   />

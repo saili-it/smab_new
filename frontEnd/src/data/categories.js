@@ -73,10 +73,10 @@ export const categories = [
   },
   {
     id: 4,
-    name: 'Extraction & Distillation',
+    name: 'Extraction des huiles',
     icon: extractionHuilesIcon,
     image: extractionHuilesImg,
-    slug: 'extraction-distillation',
+    slug: 'Extraction-des-huiles',
     subcategories: [
       { id: 401, name: 'Distillation', slug: 'Distillation' },
       { id: 402, name: 'Extraction', slug: 'Extraction' }
