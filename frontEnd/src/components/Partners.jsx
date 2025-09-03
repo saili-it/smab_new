@@ -41,7 +41,7 @@ const Partners = ({ images = [], title = 'Nos Partenaires', text = 'Des entrepri
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {images.map((img, index) => (
             <motion.div
-              key={img || index}
+              key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -56,8 +56,8 @@ const Partners = ({ images = [], title = 'Nos Partenaires', text = 'Des entrepri
                 <div className="absolute inset-0 bg-gradient-to-br from-[#e63812]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative h-32 flex items-center justify-center">
                   <motion.img
-                    src={img}
-                    alt={title}
+                    src={img.url}
+                    alt={img.alt || title}
                     className="max-h-full max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2 }}

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getBlogBySlug } from '../services/blogApi';
 import { Render } from "@measured/puck";
 import { components } from '../components/BlogComponents/components.jsx';
+import Seo from '../components/Seo';
 
 const BlogDetails = () => {
   const { slug } = useParams();
@@ -10,6 +11,7 @@ const BlogDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(blog);
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -70,9 +72,20 @@ const BlogDetails = () => {
   }
 
   return (
-<main className="min-h-screen bg-gradient-custom-vertical from-gray-50 to-white pt-20">
-  <article className="w-full px-4 sm:px-6 lg:px-8 py-16">
-    <div className="mx-auto max-w-full lg:max-w-7xl">
+    <main className="min-h-screen bg-gradient-custom-vertical from-gray-50 to-white pt-20">
+      <Seo
+        title={blog?.seo?.metaTitle || blog?.blogName || "Blog - SMAB"}
+        description={blog?.seo?.metaDescription || blog?.metadata?.description || `Découvrez notre article : ${blog?.blogName}`}
+        keywords={blog?.seo?.keywords || ["blog", "SMAB", "article", blog?.blogName?.split(' ')].flat()}
+        focusKeyphrase={blog?.seo?.focusKeyphrase}
+        ogImage={blog?.mainImage}
+        ogType="article"
+        author="SMAB"
+        publishedTime={blog?.createdAt}
+        modifiedTime={blog?.updatedAt}
+      />
+      <article className="w-full px-4 sm:px-6 lg:px-8 py-16">
+        <div className="mx-auto max-w-full lg:max-w-7xl">
 
 
           {/* Content */}

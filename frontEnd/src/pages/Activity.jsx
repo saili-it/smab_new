@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import ProductCard from '../components/ProductCard';
 import { FaFilter, FaSearch, FaArrowRight, FaPhoneAlt } from 'react-icons/fa';
 import { categories } from '../data/categories';
+import Seo from '../components/Seo';
 
 // Import hero images
 import ExtractionHuileHero from '../assets/heros/activite/EXTRACTION-DISTILLATION-DES-HUILES-HERO.png';
@@ -82,7 +83,7 @@ const Activity = () => {
   const currentCategoryContent = contentWebSite?.smabCategoriesPage?.find(
     cat => cat.name.toLowerCase() === currentCategory.name.toLowerCase()
   );
-console.log(currentCategory.name);
+  console.log(currentCategory.name);
 
   // Get all related categories (excluding current)
   const relatedCategories = categories
@@ -141,12 +142,19 @@ console.log(currentCategory.name);
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title={currentCategoryContent?.seo?.metaTitle || `${currentCategory?.name} - SMAB`}
+        description={currentCategoryContent?.seo?.metaDescription || `Découvrez nos solutions de ${currentCategory?.name}`}
+        keywords={currentCategoryContent?.seo?.keywords || [currentCategory?.name, "SMAB", "industriel", "solutions"]}
+        focusKeyphrase={currentCategoryContent?.seo?.focusKeyphrase}
+        ogImage={currentCategoryContent?.hero?.image ? `${apiContentUrl}/media/${currentCategoryContent.hero.image}` : undefined}
+      />
       {/* Hero Header */}
       <header className="relative h-[600px] overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={currentCategoryContent?.hero?.image ? getImageUrl(currentCategoryContent.hero.image) : ''}
-            alt={currentCategory?.name}
+            alt={currentCategory?.hero?.imageAlt}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
@@ -171,8 +179,7 @@ console.log(currentCategory.name);
               {currentCategoryContent?.hero?.title || currentCategory?.name || ''}
             </h1>
             <p className="text-xl text-gray-100 leading-relaxed mb-8 max-w-2xl">
-              {currentCategoryContent?.hero?.text ||
-                `Découvrez notre gamme complète d'équipements industriels pour ${currentCategory?.name || ''}`}
+              {currentCategoryContent?.hero?.text || `Découvrez notre gamme complète déquipements industriels pour ${currentCategory?.name || ''}`}
             </p>
             <div className="flex flex-wrap gap-4">
               <button className="px-8 py-3 bg-[#e63812] text-white rounded-lg hover:bg-[#ff6b4a] transition-colors duration-300 flex items-center gap-2 shadow-lg">
@@ -227,28 +234,28 @@ console.log(currentCategory.name);
               Explorez nos solutions {displayTitle}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {currentCategory.subcategories.map((sub) => (                <Link
-                  key={sub.id}
-                  to={`/activite/${category}/${sub.slug}`}
-                  className="group bg-white relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
-                >
-                  <div className="p-10 flex flex-col items-center">
-                    <div className="w-32 h-32 mb-8 bg-gray-50 rounded-3xl p-6 group-hover:bg-[#e63812]/5 transition-all duration-300 ease-in-out transform group-hover:scale-110">
-                      <img 
-                        src={subcategoryIcons[sub.name]} 
-                        alt={sub.name}
-                        className="w-full h-full object-contain filter group-hover:brightness-110"
-                      />
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-800 text-center mb-4 group-hover:text-[#e63812] transition-colors duration-300">
-                      {sub.name}
-                    </h3>
-                    <div className="flex items-center text-[#e63812] opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                      <span className="font-medium text-lg">Découvrir</span>
-                      <FaArrowRight className="ml-2 text-lg" />
-                    </div>
+              {currentCategory.subcategories.map((sub) => (<Link
+                key={sub.id}
+                to={`/activite/${category}/${sub.slug}`}
+                className="group bg-white relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className="p-10 flex flex-col items-center">
+                  <div className="w-32 h-32 mb-8 bg-gray-50 rounded-3xl p-6 group-hover:bg-[#e63812]/5 transition-all duration-300 ease-in-out transform group-hover:scale-110">
+                    <img
+                      src={subcategoryIcons[sub.name]}
+                      alt={sub.name}
+                      className="w-full h-full object-contain filter group-hover:brightness-110"
+                    />
                   </div>
-                </Link>
+                  <h3 className="text-2xl font-bold text-gray-800 text-center mb-4 group-hover:text-[#e63812] transition-colors duration-300">
+                    {sub.name}
+                  </h3>
+                  <div className="flex items-center text-[#e63812] opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                    <span className="font-medium text-lg">Découvrir</span>
+                    <FaArrowRight className="ml-2 text-lg" />
+                  </div>
+                </div>
+              </Link>
               ))}
             </div>
           </div>
@@ -296,7 +303,7 @@ console.log(currentCategory.name);
               <div className="aspect-w-16 aspect-h-7">
                 <img
                   src={getImageUrl(currentCategoryContent.advertisingBanner.image)}
-                  alt={currentCategoryContent.advertisingBanner.title}
+                  alt={currentCategoryContent.advertisingBanner.imageAlt || "Catégorie Publicitaire"}
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent">
@@ -336,10 +343,10 @@ console.log(currentCategory.name);
         <div className="container mx-auto relative">
           <div className="max-w-3xl text-white">
             <h2 className="text-4xl font-bold mb-6">
-             {` Besoin d'une solution sur mesure ?`}
+              {` Besoin d'une solution sur mesure ?`}
             </h2>
             <p className="text-xl mb-8 text-white/90">
-            {`Nos experts sont là pour vous accompagner dans le choix de l'équipement idéal pour votre activité.`}
+              {`Nos experts sont là pour vous accompagner dans le choix de l'équipement idéal pour votre activité.`}
             </p>
             <Link
               to="/contact"
@@ -366,7 +373,7 @@ console.log(currentCategory.name);
                 className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500"
               >
                 <div className="aspect-w-16 aspect-h-9">
-{/*                  <img
+                  {/*                  <img
                     src={contentWebSite?.smabCategoriesPage?.find(c => c.name === cat.name)?.hero?.image
                       ? getImageUrl(contentWebSite.smabCategoriesPage.find(c => c.name === cat.name).hero.image)
                       : cat.image}

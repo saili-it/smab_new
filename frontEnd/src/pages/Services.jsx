@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaCheckCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import Seo from '../components/Seo';
 
 const Services = () => {
   // Get dynamic hero image and services data from Redux store
@@ -10,6 +11,7 @@ const Services = () => {
   const smabNosServicesPage = contentWebSite?.smabNosServicesPage || {};
   const cards = smabNosServicesPage.cards || [];
   const details = smabNosServicesPage.details || [];
+  const seoData = smabNosServicesPage.seo || {};
   const apiBase = import.meta.env.VITE_API_CONTENT;
 
   // Build dynamic services array by matching cards and details by key
@@ -50,12 +52,19 @@ const Services = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Seo
+        title={seoData?.metaTitle || "Nos Services - SMAB"}
+        description={seoData?.metaDescription  || "Découvrez nos services professionnels"}
+        keywords={seoData?.keywords || ["services", "industriel", "SMAB"]}
+        focusKeyphrase={seoData?.focusKeyphrase}
+        ogImage={heroBanner}
+      />
       {/* Hero Banner */}
       <div className="relative h-[60vh] overflow-hidden">
         {heroBanner ? (
           <img
             src={heroBanner}
-            alt="Nos Services Banner"
+            alt={smabNosServicesPage?.hero?.imageAlt || "Nos Services Banner"}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -80,10 +89,10 @@ const Services = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Nos Services Professionnels</h2>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{smabNosServicesPage?.hero?.title || "Nos Services Professionnels"}</h1>
           <div className="h-1 w-20 bg-[#e63812] mx-auto mb-6"></div>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Découvrez notre gamme complète de services professionnels conçus pour répondre à vos besoins industriels.
+            {smabNosServicesPage?.hero?.text || "Découvrez notre gamme complète de services professionnels conçus pour répondre à vos besoins industriels."}
           </p>
         </motion.div>
 
@@ -171,7 +180,7 @@ const Services = () => {
                     {service.detailImage ? (
                       <img
                         src={service.detailImage}
-                        alt={service.title}
+                        alt={service.imageAlt}
                         className="w-full h-auto"
                       />
                     ) : (

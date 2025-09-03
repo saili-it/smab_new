@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 import { submitContactForm } from '../services/contactService';
+import Seo from '../components/Seo';
 
 const Contact = () => {
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,6 +21,9 @@ const Contact = () => {
   const contactInfo = contentWebSite?.smabContactPage || {};
   const phoneNumber = contactInfo.tel ? `+${contactInfo.tel}` : '+212 766-074939';
   const emailAddress = contactInfo.email || 'contact@smab-co.com';
+
+  const seoData = contactInfo?.seo;
+  let heroMediaUrl = '';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,6 +70,13 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Seo
+        title={seoData?.metaTitle || 'Contact - SMAB'}
+        description={seoData?.metaDescription || 'Contactez-nous pour en savoir plus sur nos services et produits'}
+        keywords={seoData?.keywords}
+        focusKeyphrase={seoData?.focusKeyphrase}
+        ogImage={heroMediaUrl}
+      />
       {/* Hero Section */}
       <div className="bg-gray-900 text-white py-20">
         <div className="container mx-auto px-4">
@@ -74,10 +86,9 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contactez-nous</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">{contactInfo.title || "Contactez-nous"}</h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Notre équipe est à votre disposition pour répondre à toutes vos questions
-              et vous accompagner dans vos projets.
+              {contactInfo.text || "Notre équipe est à votre disposition pour répondre à toutes vos questions et vous accompagner dans vos projets."}
             </p>
           </motion.div>
         </div>
@@ -95,7 +106,7 @@ const Contact = () => {
           >
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Informations de contact</h2>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <div className="bg-[#e63812]/10 p-3 rounded-lg">
@@ -153,14 +164,13 @@ const Contact = () => {
           >
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Envoyez-nous un message</h2>
-              
+
               {message.content && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`rounded-lg p-4 mb-6 ${
-                    message.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-                  }`}
+                  className={`rounded-lg p-4 mb-6 ${message.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+                    }`}
                 >
                   <div className="text-sm">{message.content}</div>
                 </motion.div>

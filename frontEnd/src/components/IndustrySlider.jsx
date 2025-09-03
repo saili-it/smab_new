@@ -6,7 +6,7 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-const IndustrySlider = ({ title, subtitle, slides }) => {
+const IndustrySlider = ({ title, subtitle, slides, }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
@@ -59,7 +59,7 @@ const IndustrySlider = ({ title, subtitle, slides }) => {
                   <div className="md:w-1/2 relative overflow-hidden">
                     <img
                       src={slide.image}
-                      alt={slide.title}
+                      alt={slide.imageAlt}
                       className="w-full h-[300px] md:h-[500px] object-cover transform transition-transform duration-700 hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent md:bg-gradient-to-r" />

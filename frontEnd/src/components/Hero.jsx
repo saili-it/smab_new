@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
 import logo from '../assets/logos/LOGO-SMAB-CROP-1.png'; 
 
-const Hero = ({ videoUrl, imageUrl, mobileImag, title, subtitle, overlay = true, showLogo = false, showButton = false, ctaText = 'Contactez-nous', ctaLink = '/contact' }) => {
+const Hero = ({ videoUrl, imageUrl, mobileImag, imageAlt, title, subtitle, overlay = true, showLogo = false, showButton = false, ctaText = 'Contactez-nous', ctaLink = '/contact' }) => {
   return (
     <div className="relative h-screen w-full overflow-hidden">
       {/* Mobile Version */}
       <Link to="/contact" className="block md:hidden">
         <img
           src={mobileImag}
-          alt="Hero background mobile"
+          alt={imageAlt}
           className="absolute top-0 left-0 w-full h-full object-cover"
           style={{ height:'50%'}}
         />

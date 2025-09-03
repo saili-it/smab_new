@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Hero from '../components/Hero';
 import CategorySlider from '../components/CategorySlider';
@@ -8,6 +8,7 @@ import Stats from '../components/Stats';
 import BestSellers from '../components/BestSellers';
 import { getProduitsCategory } from '../services/productService';
 import Partners from '../components/Partners';
+import Seo from '../components/Seo';
 
 
 // Import hero image for mobile
@@ -35,7 +36,7 @@ const Home = () => {
 
   // Get website content from Redux store
   const contentWebSite = useSelector(state => state.content.data);
-  console.log(contentWebSite)
+  const seoData = contentWebSite?.smabHomePage?.seo;
 
   // Fetch products from multiple categories and get random 4
   useEffect(() => {
@@ -88,10 +89,18 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title={seoData?.metaTitle || 'SMAB - Accueil'}
+        description={seoData?.metaDescription || 'Bienvenue sur SMAB'}
+        keywords={seoData?.keywords}
+        focusKeyphrase={seoData?.focusKeyphrase}
+        ogImage={heroMediaUrl}
+      />
       <Hero
         videoUrl={heroData?.isVideo ? heroMediaUrl : undefined}
         imageUrl={!heroData?.isVideo ? heroMediaUrl : undefined}
-        mobileImag={mobileHeroImg}
+        mobileImage={mobileHeroImg}
+        imageAlt={heroData?.bannierAlt || ''}
         title={heroData?.title || ''}
         subtitle={heroData?.text || ''}
         overlay={true}
@@ -169,7 +178,7 @@ const Home = () => {
             title: "EXTRACTION DES HUILES",
             description: "Solutions complètes pour l'extraction d'huiles",
             image: extractionHuilesImg, link: "/activite/extraction-des-huiles"
-            
+
           },
           {
             title: "PACKAGING",
@@ -211,27 +220,29 @@ const Home = () => {
         slides={
           Array.isArray(contentWebSite?.smabHomePage?.decouvrez?.swiper)
             ? contentWebSite.smabHomePage.decouvrez.swiper.map(item => ({
-                image: item.image ? `${import.meta.env.VITE_API_CONTENT}/media/${item.image}` : '',
-                title: item.title,
-                description: item.desc
-              }))
+              image: item.image ? `${import.meta.env.VITE_API_CONTENT}/media/${item.image}` : '',
+              imageAlt: item.imageAlt || '',
+              title: item.title,
+              description: item.desc
+            }))
             : []
         }
       />
 
-      {/* Project Showcase Section */}      
+      {/* Project Showcase Section */}
       <ProjectShowcase
         title="Nos projets et réalisations"
         projects={
           Array.isArray(contentWebSite?.smabHomePage?.projets)
             ? contentWebSite.smabHomePage.projets.map((item, idx) => ({
-                id: item._id || idx,
-                name: item.title,
-                video: item.videoUrl
-              }))
+              id: item._id || idx,
+              name: item.title,
+              video: item.videoUrl
+            }))
             : []
         }
       />
+
       {/* Best Sellers Section */}
       <BestSellers
         title="Nos Meilleures Ventes"
@@ -247,7 +258,10 @@ const Home = () => {
       {/* Partners Section */}
       <Partners
         images={Array.isArray(contentWebSite?.smabHomePage?.partenaires?.images)
-          ? contentWebSite.smabHomePage.partenaires.images.map(img => `${import.meta.env.VITE_API_CONTENT}/media/${img}`)
+          ? contentWebSite.smabHomePage.partenaires.images.map(img => ({
+              url: `${import.meta.env.VITE_API_CONTENT}/media/${img.url}`,
+              alt: img.alt
+            }))
           : []}
         title={contentWebSite?.smabHomePage?.partenaires?.title}
         text={contentWebSite?.smabHomePage?.partenaires?.text}
