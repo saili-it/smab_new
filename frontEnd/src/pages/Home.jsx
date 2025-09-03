@@ -10,6 +10,9 @@ import { getProduitsCategory } from '../services/productService';
 import Partners from '../components/Partners';
 
 
+// Import hero image for mobile
+import mobileHeroImg from '../assets/heros/mainHeroMobile.jpg';
+
 // Import images for categories
 import extractionHuilesImg from '../assets/images/extraction_huiles.jpg';
 import packagingImg from '../assets/images/packaging.jpg';
@@ -88,11 +91,12 @@ const Home = () => {
       <Hero
         videoUrl={heroData?.isVideo ? heroMediaUrl : undefined}
         imageUrl={!heroData?.isVideo ? heroMediaUrl : undefined}
+        mobileImag={mobileHeroImg}
         title={heroData?.title || ''}
         subtitle={heroData?.text || ''}
         overlay={true}
         showLogo={true}
-        showButton={!!heroData?.ctaText}
+        showButton={!heroData?.ctaText}
         ctaText={heroData?.ctaText}
         ctaLink={heroData?.ctaLink}
       />

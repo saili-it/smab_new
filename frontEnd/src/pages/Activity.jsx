@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getProduitsCategory } from '../services/productService';
@@ -82,7 +82,7 @@ const Activity = () => {
   const currentCategoryContent = contentWebSite?.smabCategoriesPage?.find(
     cat => cat.name.toLowerCase() === currentCategory.name.toLowerCase()
   );
-
+console.log(currentCategory.name);
 
   // Get all related categories (excluding current)
   const relatedCategories = categories
@@ -366,13 +366,16 @@ const Activity = () => {
                 className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500"
               >
                 <div className="aspect-w-16 aspect-h-9">
-                  <img
+{/*                  <img
                     src={contentWebSite?.smabCategoriesPage?.find(c => c.name === cat.name)?.hero?.image
                       ? getImageUrl(contentWebSite.smabCategoriesPage.find(c => c.name === cat.name).hero.image)
                       : cat.image}
                     alt={cat.name}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                  />
+                  />*/}
+
+                  <img src={cat.image} alt={cat.name} />
+
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent">
                     <div className="absolute bottom-0 left-0 right-0 p-6">
                       <h3 className="text-2xl font-bold text-white mb-2">

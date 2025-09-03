@@ -1,32 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import blog1 from '../assets/images/blogs/blog1.png';
-import blog2 from '../assets/images/blogs/blog Production Amlou.jpg';
-import blog3 from '../assets/images/blogs/blogId3(3).png';
-
-const blogs = [    { 
-        id: 1, 
-        title: "Secteurs Porteurs pour les Jeunes Entrepreneurs au Maroc en 2024", 
-        image: blog1, 
-        link: '/conseils/1', 
-        description: "En 2024, les jeunes entrepreneurs au Maroc ont l'opportunité de se lancer dans des secteurs en pleine expansion..."
-    },    {
-        id: 2, 
-        title: "Révolutionner la Production d'Amlou : Le Rôle des Machines Modernes", 
-        image: blog2, 
-        link: '/conseils/2',
-        description: "La production d'Amlou repose sur des ingrédients de qualité, mais également sur des processus optimisés. L'intégration de machines comme le moulin à beurre a transformé l'industrie"
-    },    {
-        id: 3, 
-        title: "Comment optimiser votre production avec des machines d'ensachage automatiques", 
-        image: blog3, 
-        link: '/conseils/3',
-        description: "L'ensachage est une étape essentielle dans de nombreuses industries, notamment alimentaire, cosmétique et pharmaceutique"
-    }
-];
+import { getAllBlogs } from '../services/blogApi';
 
 const NosConseils = () => {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const blogsData = await getAllBlogs();
+        setBlogs(blogsData);
+      } catch (err) {
+        setError('Error fetching blogs');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -48,43 +44,57 @@ const NosConseils = () => {
 
       {/* Blogs Grid Section */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogs.map((blog, index) => (
-            <motion.div
-              key={blog.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Link to={blog.link} className="block">
-                <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={blog.image}
-                      alt={blog.title}
-                      className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
-                      {blog.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {blog.description}
-                    </p>
-                    <div className="flex items-center text-[#e63812] font-semibold">
-                      Lire la suite
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                      </svg>
+        {loading ? (
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#e63812] mx-auto"></div>
+            <p className="mt-4 text-gray-600">Chargement des articles...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-600">{error}</div>
+        ) : !blogs || blogs.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-gray-500 text-xl mb-4">Aucun article disponible pour le moment</div>
+            <p className="text-gray-400">Revenez bientôt pour découvrir nos nouveaux articles</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {blogs.map((blog, index) => (
+              <motion.div
+                key={blog._id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Link to={`/conseils/${blog.slug}`} className="block">
+                  <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={blog.metadata.mainImage}
+                        alt={blog.metadata.blogName}
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
+                        {blog.metadata.blogName}
+                      </h3>
+                      <p className="text-gray-600 mb-4 line-clamp-3">
+                        {blog.metadata.description}
+                      </p>
+                      <div className="flex items-center text-[#e63812] font-semibold">
+                        Lire la suite
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

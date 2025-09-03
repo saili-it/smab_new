@@ -55,7 +55,7 @@ export const mainRoutes = [
     element: <NosConseils />
   },
   {
-    path: 'conseils/:id',
+    path: 'conseils/:slug',
     element: <BlogDetails />
   },
   {
