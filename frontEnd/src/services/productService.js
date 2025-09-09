@@ -11,6 +11,20 @@ export const api = axios.create({
   }
 });
 
+export const getAllProducts = async () => {
+  try {
+    const response = await api.get('/product', {
+      params: {
+        mark: 'smab'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all products:', error);
+    throw error;
+  }
+};
+
 export const getProduitsCategory = async (category) => {
   try {
     const response = await api.get(`/category/${category}/product`, {

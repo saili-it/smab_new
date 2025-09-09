@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -8,6 +8,10 @@ import './index.css'
 
 import { rootRoutes } from './routes'
 import { AuthProvider } from './store/AuthContext'
+import { initializeSecurity } from './utils/security'
+
+// Initialize security measures
+initializeSecurity();
 
 const router = createBrowserRouter(rootRoutes)
 

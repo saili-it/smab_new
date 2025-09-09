@@ -8,6 +8,31 @@
 
 @tailwind base;
 @tailwind components;
+
+/* Prevent image context menu, dragging, and selection */
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+}
+
+/* Prevent text selection across the site */
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Disable screenshot capturing (limited effect) */
+html {
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
 @tailwind utilities;
 
 @layer utilities {
