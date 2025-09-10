@@ -110,7 +110,7 @@ async function fetchDynamicRoutes() {
       console.error('Unexpected products API response structure.');
     }
     productRoutes = productArray.map(p =>
-      p.ProductLabel ? `produit/${generateSlug(p.ProductLabel)}?${p.ProductId}` : null
+      p.ProductLabel ? `produit/${generateSlug(p.ProductLabel)}?id=${p.ProductId}` : null
     ).filter(Boolean);
   } catch (e) {
     console.error('Failed to fetch products:', e.message);

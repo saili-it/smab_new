@@ -177,7 +177,8 @@ const Home = () => {
           {
             title: "EXTRACTION DES HUILES",
             description: "Solutions complètes pour l'extraction d'huiles",
-            image: extractionHuilesImg, link: "/activite/extraction-des-huiles"
+            image: extractionHuilesImg, 
+            link: "/activite/Extraction-des-huiles"
 
           },
           {

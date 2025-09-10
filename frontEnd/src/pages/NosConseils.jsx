@@ -42,6 +42,56 @@ const NosConseils = () => {
         </div>
       </div>
 
+      {/* Tutorial Videos Section */}
+      <div className="container mx-auto px-4 py-16 bg-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">{`Tutoriels et Guides d'Utilisation`}</h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Découvrez comment utiliser nos produits efficacement à travers nos vidéos tutorielles détaillées.
+          </p>
+        </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="aspect-video rounded-xl overflow-hidden shadow-lg"
+          >
+            <iframe
+              className="w-full h-full"
+              src="https://www.youtube.com/embed/s5ejLq-iQgw?si=kHK13E7_uGJX3A0u"
+              title="Product Tutorial 1"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="aspect-video rounded-xl overflow-hidden shadow-lg"
+          >
+            <iframe
+              className="w-full h-full"
+              src="https://www.youtube.com/embed/gmsx9D_JYhQ?si=jiS5RI57rLxTKPXt"
+              title="Product Tutorial 2"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </motion.div>
+        </div>
+      </div>
+
       {/* Blogs Grid Section */}
       <div className="container mx-auto px-4 py-16">
         {loading ? (
