@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
 import logo from '../assets/logos/LOGO-SMAB-CROP-1.png'; 
 
-const Hero = ({ videoUrl, imageUrl, mobileImag, imageAlt, title, subtitle, overlay = true, showLogo = false, showButton = false, ctaText = 'Contactez-nous', ctaLink = '/contact' }) => {
+const Hero = ({ videoUrl, imageUrl, mobileImag, imageAlt, title, subtitle, overlay = true, showLogo = false, showButton = true, ctaText , ctaLink  }) => {
   return (
     <div className="relative h-screen w-full overflow-hidden">
       {/* Mobile Version */}
@@ -61,8 +61,8 @@ const Hero = ({ videoUrl, imageUrl, mobileImag, imageAlt, title, subtitle, overl
             </p>
           )}
           
-          {showButton && (
-            ctaLink.startsWith('http') ? (
+          {showButton && ctaText && ctaLink && (
+            typeof ctaLink === 'string' && ctaLink.startsWith('http') ? (
               <a
                 href={ctaLink}
                 className="inline-flex items-center gap-2 bg-[#e63812] text-white px-8 py-3 rounded-lg hover:bg-[#ff6b4a] transition-colors font-semibold mt-6"
@@ -74,7 +74,7 @@ const Hero = ({ videoUrl, imageUrl, mobileImag, imageAlt, title, subtitle, overl
               </a>
             ) : (
               <Link
-                to={ctaLink.startsWith('/') ? ctaLink : `/${ctaLink}`}
+                to={typeof ctaLink === 'string' && ctaLink.startsWith('/') ? ctaLink : `/${ctaLink}`}
                 className="inline-flex items-center gap-2 bg-[#e63812] text-white px-8 py-3 rounded-lg hover:bg-[#ff6b4a] transition-colors font-semibold mt-6"
               >
                 {ctaText}

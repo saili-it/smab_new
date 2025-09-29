@@ -77,10 +77,4 @@ export const initializeSecurity = () => {
   preventContextMenu();
   preventScreenCapture();
   preventCopyPaste();
-  
-  // Add warning message when trying to leave the page
-  window.addEventListener('beforeunload', (e) => {
-    e.preventDefault();
-    e.returnValue = '';
-  });
 };

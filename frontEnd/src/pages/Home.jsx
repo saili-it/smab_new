@@ -99,13 +99,13 @@ const Home = () => {
       <Hero
         videoUrl={heroData?.isVideo ? heroMediaUrl : undefined}
         imageUrl={!heroData?.isVideo ? heroMediaUrl : undefined}
-        mobileImage={mobileHeroImg}
+        mobileImag={mobileHeroImg}
         imageAlt={heroData?.bannierAlt || ''}
         title={heroData?.title || ''}
         subtitle={heroData?.text || ''}
         overlay={true}
         showLogo={true}
-        showButton={!heroData?.ctaText}
+        showButton={!!heroData?.ctaText}
         ctaText={heroData?.ctaText}
         ctaLink={heroData?.ctaLink}
       />

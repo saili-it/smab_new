@@ -16,6 +16,7 @@ import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
 import CGV from '../pages/CGV'
 import MentionLegal from '../pages/MentionLegal'
+import PolitiqueConfidentialite from '../pages/PolitiqueConfidentialite'
 
 export const mainRoutes = [
   {
@@ -29,6 +30,10 @@ export const mainRoutes = [
   {
     path: 'mention-legal',
     element: <MentionLegal />
+  },
+  {
+    path: 'politique-confidentialite',
+    element: <PolitiqueConfidentialite />
   },
   {
     path: 'login',
