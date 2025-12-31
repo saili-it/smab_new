@@ -4,8 +4,11 @@ import { motion } from 'framer-motion';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 import { submitContactForm } from '../services/contactService';
 import Seo from '../components/Seo';
+import { useMetaPixel } from '../hooks/useMetaPixel';
 
 const Contact = () => {
+  // Meta Pixel tracking
+  const { trackEvent } = useMetaPixel();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -32,6 +35,15 @@ const Contact = () => {
 
     try {
       await submitContactForm(formData);
+      
+      // Track successful form submission with Meta Pixel
+      trackEvent('Lead', {
+        content_name: 'Contact Form Submission',
+        content_category: 'Lead Generation',
+        value: 0,
+        currency: 'EUR'
+      });
+      
       setMessage({
         type: 'success',
         content: 'Votre message a été envoyé avec succès!'
@@ -61,10 +73,25 @@ const Contact = () => {
   };
 
   const handleWhatsAppClick = () => {
+    // Track WhatsApp contact attempt
+    trackEvent('Contact', {
+      content_name: 'WhatsApp Contact',
+      content_category: 'Contact Method',
+      value: 0,
+      currency: 'EUR'
+    });
+    
     window.open(`https://wa.me/${contactInfo.tel || phoneNumber.replace(/[^0-9]/g, '')}`, '_blank');
   };
 
   const handleEmailClick = () => {
+    // Track email contact attempt
+    trackEvent('Contact', {
+      content_name: 'Email Contact',
+      content_category: 'Contact Method',
+      value: 0,
+      currency: 'EUR'
+    });
     window.location.href = `mailto:${emailAddress}`;
   };
 
@@ -76,6 +103,11 @@ const Contact = () => {
         keywords={seoData?.keywords}
         focusKeyphrase={seoData?.focusKeyphrase}
         ogImage={heroMediaUrl}
+        pageType="contact"
+        breadcrumbs={[
+          { name: 'Accueil', url: 'https://smab-co.com' },
+          { name: 'Contact', url: 'https://smab-co.com/contact' }
+        ]}
       />
       {/* Hero Section */}
       <div className="bg-gray-900 text-white py-20">

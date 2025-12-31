@@ -5,7 +5,7 @@ import logo from '../assets/logos/LOGO-SMAB-CROP-1.png'
 import logo_cmi from '../assets/logo_cmi.png'
 import logo_mastercard from '../assets/logo_mastercard.png'
 import logo_visa from '../assets/logo_visa.png'
-import { FaFacebookF, FaInstagram, FaTiktok, FaYoutube, FaEnvelope, FaPhone, FaClock } from 'react-icons/fa'
+import { FaFacebookF, FaInstagram, FaTiktok, FaYoutube, FaLinkedin, FaEnvelope, FaPhone, FaClock } from 'react-icons/fa'
 
 const Footer = () => {
   const contentWebSite = useSelector(state => state.content.data);
@@ -14,7 +14,8 @@ const Footer = () => {
   const emailAddress = contactInfo.email || 'contact@smab-co.com';
   const fbLink = contactInfo.fb || 'https://web.facebook.com/SMABMAROC/?locale=fr_FR&_rdc=1&_rdr';
   const instaLink = contactInfo.insta || 'https://www.instagram.com/smabmaroc/';
-  const tiktokLink = contactInfo.tiktok || '#';
+  const tiktokLink = contactInfo.tiktok || 'https://www.tiktok.com/@smabmaroc';
+  const linkedinLink = contactInfo.linkedin || 'https://www.linkedin.com/company/smab-equipements/';
   const ytbLink = contactInfo.ytb || 'https://www.youtube.com/@SMABMAROC/about';
   return (
     <footer className="mt-auto bg-gradient-to-b from-gray-900 to-black text-white">
@@ -100,7 +101,7 @@ const Footer = () => {
               <div className="mb-6 space-y-3">
                 <div className="flex items-center gap-3 text-gray-300">
                   <FaPhone className="text-[#e63812]" />
-                  <a href={`https://wa.me/${contactInfo.tel || phoneNumber.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{phoneNumber}</a>
+                  <a href={`https://wa.me/${contactInfo.tel || phoneNumber.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{phoneNumber}</a>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <FaClock className="text-[#e63812]" />
@@ -142,6 +143,9 @@ const Footer = () => {
                   </a>
                   <a href={instaLink} rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
                     <FaInstagram size={20} />
+                  </a>
+                  <a href={linkedinLink} rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
+                    <FaLinkedin size={20} />
                   </a>
                   <a href={ytbLink} rel="noopener noreferrer" target="_blank" className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-[#e63812] hover:text-white transition-all duration-300">
                     <FaYoutube size={20} />

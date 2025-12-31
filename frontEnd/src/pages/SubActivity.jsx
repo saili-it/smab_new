@@ -21,6 +21,8 @@ const SubActivity = () => {
     sub => sub.slug.toLowerCase() === subcategory.toLowerCase()
   );
 
+  console.log(currentSubcategory)
+
 
   useEffect(() => {
     const fetchProducts = async () => {

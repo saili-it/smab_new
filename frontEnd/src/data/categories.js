@@ -34,7 +34,7 @@ export const categories = [
     image: nettoyageImg,
     slug: 'nettoyage-separation',
     subcategories: [
-      { id: 501, name: 'Séparation', slug: 'Separation' },
+      { id: 501, name: 'Separation', slug: 'Separation' },
       { id: 502, name: 'Nettoyage', slug: 'Nettoyage' }
     ]
   },

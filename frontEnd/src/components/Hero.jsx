@@ -1,21 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
-import logo from '../assets/logos/LOGO-SMAB-CROP-1.png'; 
+import logo from '../assets/logos/LOGO-SMAB-CROP-1.png';
 
-const Hero = ({ videoUrl, imageUrl, mobileImag, imageAlt, title, subtitle, overlay = true, showLogo = false, showButton = true, ctaText , ctaLink  }) => {
+const Hero = ({ videoUrl, imageUrl, mobileImag, imageAlt, title, subtitle, overlay = true, showLogo = false, showButton = true, ctaText, ctaLink }) => {
   return (
-    <div className="relative h-screen w-full overflow-hidden">
-      {/* Mobile Version */}
-      <Link to="/contact" className="block md:hidden">
-        <img
-          src={mobileImag}
-          alt={imageAlt}
-          className="absolute top-0 left-0 w-full h-full object-cover"
-          style={{ height:'50%'}}
-        />
-      </Link>
-
+    <div className="relative h-[37vh] sm:h-[67vh] md:h-screen w-full overflow-hidden">
+      {/* Mobile media */}
+      <div className="block md:hidden">
+        {mobileImag && (
+          <img
+          onClick={() => window.location.href = '/contact'}
+            src={mobileImag}
+            alt={imageAlt}
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          />
+        )}
+      </div>
+      
       {/* Desktop Version */}
       <div className="hidden md:block">
         {videoUrl ? (
@@ -23,6 +25,7 @@ const Hero = ({ videoUrl, imageUrl, mobileImag, imageAlt, title, subtitle, overl
             autoPlay
             muted
             loop
+            playsInline
             className="absolute top-0 left-0 w-full h-full object-cover"
           >
             <source src={videoUrl} type="video/mp4" />
@@ -37,53 +40,48 @@ const Hero = ({ videoUrl, imageUrl, mobileImag, imageAlt, title, subtitle, overl
         ) : null}
       </div>
 
-      <div className="hidden md:block">
-      {overlay && (
-        <div className="absolute inset-0 bg-black/50" />
-      )}
-
-      <div className="relative h-full flex flex-col items-center justify-center text-white px-4 md:px-8">
-        {showLogo && (
-          <img 
-            src={logo} 
-            alt="SMAB Logo" 
-            className="w-48 md:w-64 mb-8"
-          />
-        )}
-        
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+      
+      {/* Content (hidden on mobile, visible from md) */}
+      <div className="hidden md:flex md:relative h-full flex-col items-center justify-center text-white px-4 md:px-8">
+        <div className="max-w-3xl mx-auto text-center mt-10 md:mt-20">
+          {showLogo && (
+            <div className="flex justify-center mb-6 md:mb-8">
+              <img src={logo} alt="SMAB logo" className="h-10 md:h-12 w-auto" />
+            </div>
+          )}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 leading-tight">
             {title}
           </h1>
           {subtitle && (
-            <p className="text-xl md:text-2xl opacity-90 mb-8">
+            <p className="text-base sm:text-lg md:text-xl opacity-90 mb-6 md:mb-8">
               {subtitle}
             </p>
           )}
-          
+
           {showButton && ctaText && ctaLink && (
             typeof ctaLink === 'string' && ctaLink.startsWith('http') ? (
               <a
                 href={ctaLink}
-                className="inline-flex items-center gap-2 bg-[#e63812] text-white px-8 py-3 rounded-lg hover:bg-[#ff6b4a] transition-colors font-semibold mt-6"
+                className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#e63812] to-[#ff6b4a] text-white px-8 py-3 md:px-10 md:py-4 rounded-full hover:from-[#ff6b4a] hover:to-[#e63812] transition-all duration-300 font-bold text-base md:text-lg shadow-2xl hover:shadow-[#e63812]/50 hover:scale-105 transform hover:-translate-y-1 border-2 border-white/20 hover:border-white/40"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {ctaText}
-                <FaArrowRight />
+                <span className="relative z-10">{ctaText}</span>
+                <FaArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+                <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </a>
             ) : (
               <Link
                 to={typeof ctaLink === 'string' && ctaLink.startsWith('/') ? ctaLink : `/${ctaLink}`}
-                className="inline-flex items-center gap-2 bg-[#e63812] text-white px-8 py-3 rounded-lg hover:bg-[#ff6b4a] transition-colors font-semibold mt-6"
+                className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#e63812] to-[#ff6b4a] text-white px-8 py-3 md:px-10 md:py-4 rounded-full hover:from-[#ff6b4a] hover:to-[#e63812] transition-all duration-300 font-bold text-base md:text-lg shadow-2xl hover:shadow-[#e63812]/50 hover:scale-105 transform hover:-translate-y-1 border-2 border-white/20 hover:border-white/40"
               >
-                {ctaText}
-                <FaArrowRight />
+                <span className="relative z-10">{ctaText}</span>
+                <FaArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+                <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </Link>
             )
           )}
         </div>
-      </div>
       </div>
     </div>
   );

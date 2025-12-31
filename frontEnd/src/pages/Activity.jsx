@@ -32,6 +32,8 @@ import SechageIcon from '../assets/subactivites_icons/Sechage.png';
 import TorrefactionIcon from '../assets/subactivites_icons/Torrefaction.png';
 import Broyage from '../assets/subactivites_icons/Broyage.jpg';
 import Mouture from '../assets/subactivites_icons/Mouture.jpg';
+import Separation from '../assets/subactivites_icons/separation.png'
+import Nettoyage from '../assets/subactivites_icons/nettoyage.png'
 
 // Hero images mapping
 const heroImages = {
@@ -60,7 +62,9 @@ const subcategoryIcons = {
   'Séchage': SechageIcon,
   'Torréfaction': TorrefactionIcon,
   'Broyage': Broyage,
-  'Mouture': Mouture
+  'Mouture': Mouture,
+  'Separation': Separation,
+  'Nettoyage': Nettoyage
 };
 
 const Activity = () => {
@@ -83,7 +87,6 @@ const Activity = () => {
   const currentCategoryContent = contentWebSite?.smabCategoriesPage?.find(
     cat => cat.name.toLowerCase() === currentCategory.name.toLowerCase()
   );
-  console.log(currentCategory.name);
 
   // Get all related categories (excluding current)
   const relatedCategories = categories
@@ -248,7 +251,8 @@ const Activity = () => {
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-800 text-center mb-4 group-hover:text-[#e63812] transition-colors duration-300">
-                    {sub.name}
+                    {sub.name === "Separation" ? "Séparation" : sub.name}
+
                   </h3>
                   <div className="flex items-center text-[#e63812] opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                     <span className="font-medium text-lg">Découvrir</span>
