@@ -17,6 +17,8 @@ import ResetPassword from '../pages/ResetPassword'
 import CGV from '../pages/CGV'
 import MentionLegal from '../pages/MentionLegal'
 import PolitiqueConfidentialite from '../pages/PolitiqueConfidentialite'
+import JobOffers from '../pages/JobOffers'
+import JobOfferDetail from '../pages/JobOfferDetail'
 
 export const mainRoutes = [
   {
@@ -86,6 +88,14 @@ export const mainRoutes = [
   {
     path: 'contact',
     element: <Contact />
+  },
+  {
+    path: 'offres',
+    element: <JobOffers />
+  },
+  {
+    path: 'offres/:id',
+    element: <JobOfferDetail />
   },
   {
     path: 'dashboard',
