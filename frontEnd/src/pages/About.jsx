@@ -128,11 +128,18 @@ const About = () => {
               className="w-full lg:w-1/2"
             >
               <div className="relative">
-                <img
-                  src={historyImage}
-                  alt="Notre Histoire"
-                  className="w-full rounded-2xl shadow-2xl"
-                />
+                <div className="w-full rounded-2xl shadow-2xl overflow-hidden">
+                  <iframe 
+                    width="100%" 
+                    height="315" 
+                    src="https://www.youtube.com/embed/sbTKp9P9qoo?si=jWux5aVUUzuCh9J-" 
+                    title="YouTube video player" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerPolicy="strict-origin-when-cross-origin" 
+                    allowFullScreen
+                  ></iframe>
+                </div>
                 <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#e63812]/10 rounded-full"></div>
                 <div className="absolute -top-6 -left-6 w-24 h-24 bg-[#e63812]/5 rounded-full"></div>
               </div>

@@ -175,24 +175,27 @@ const Navigation = ({ children }) => {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
+            <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
               <button
-                className="nav-trigger flex items-center text-gray-700 hover:text-[#e63812] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#e63812]"
+                className="nav-trigger flex items-center text-gray-700 hover:text-[#e63812] text-sm font-medium transition-colors px-3 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#e63812]"
                 onClick={() => setShowSideNav(!showSideNav)}
               >
-                <FaBars className="mr-2" />
+                <FaBars className="mr-1" />
                 Toutes les catégories
               </button>
-              <Link to="/services" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50">
+              <Link to="/services" className="text-gray-700 hover:text-[#e63812] text-sm font-medium transition-colors px-3 py-2 rounded-lg hover:bg-gray-50">
                 Nos services
               </Link>
-              <Link to="/conseils" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50">
+              <Link to="/conseils" className="text-gray-700 hover:text-[#e63812] text-sm font-medium transition-colors px-3 py-2 rounded-lg hover:bg-gray-50">
                 Nos conseils
               </Link>
-              <Link to="/about" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50">
+              <Link to="/about" className="text-gray-700 hover:text-[#e63812] text-sm font-medium transition-colors px-3 py-2 rounded-lg hover:bg-gray-50">
                 À propos
               </Link>
-              <Link to="/contact" className="text-gray-700 hover:text-[#e63812] font-medium transition-colors px-4 py-2 rounded-lg hover:bg-gray-50">
+              <Link to="/offres" className="text-gray-700 hover:text-[#e63812] text-xs font-medium transition-colors px-2 py-2 rounded-lg hover:bg-gray-50">
+                Rejoindre SMAB
+              </Link>
+              <Link to="/contact" className="text-gray-700 hover:text-[#e63812] text-sm font-medium transition-colors px-3 py-2 rounded-lg hover:bg-gray-50">
                 Contact
               </Link>
               {/* Cart Icon */}
@@ -398,6 +401,13 @@ const Navigation = ({ children }) => {
                         onClick={() => setIsOpen(false)}
                       >
                         À propos de nous
+                      </Link>
+                      <Link
+                        to="/offres"
+                        className="block px-4 py-3 text-gray-700 hover:text-[#e63812] bg-gray-50/50 hover:bg-white rounded-xl transition-all duration-300 hover:shadow-md border-l-[3px] border-transparent hover:border-[#e63812]"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Rejoindre SMAB
                       </Link>
                       <Link
                         to="/contact"

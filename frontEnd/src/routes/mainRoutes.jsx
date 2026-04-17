@@ -19,6 +19,8 @@ import MentionLegal from '../pages/MentionLegal'
 import PolitiqueConfidentialite from '../pages/PolitiqueConfidentialite'
 import JobOffers from '../pages/JobOffers'
 import JobOfferDetail from '../pages/JobOfferDetail'
+import Distributeur from '../pages/Distributeur'
+import Affilies from '../pages/Affilies'
 
 export const mainRoutes = [
   {
@@ -96,6 +98,14 @@ export const mainRoutes = [
   {
     path: 'offres/:id',
     element: <JobOfferDetail />
+  },
+  {
+    path: 'distributeur',
+    element: <Distributeur />
+  },
+  {
+    path: 'affilies',
+    element: <Affilies />
   },
   {
     path: 'dashboard',

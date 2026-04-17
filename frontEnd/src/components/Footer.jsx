@@ -64,7 +64,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/offres" className="text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-300 inline-block">
-                  Rejoindre nos offres
+                Rejoindre SMAB
                 </Link>
               </li>
             </ul>
